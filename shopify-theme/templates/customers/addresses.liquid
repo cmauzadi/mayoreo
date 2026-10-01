@@ -1,0 +1,27 @@
+<div class="wrap page page-narrow">
+  <span class="mono eyebrow">Mi cuenta</span>
+  <h1 class="disp">Mis direcciones</h1>
+  {%- for address in customer.addresses -%}
+    <div class="panel" style="margin-bottom:16px">
+      <div class="rte">{{ address | format_address }}</div>
+    </div>
+  {%- else -%}
+    <p class="dim">Todavía no tienes direcciones guardadas.</p>
+  {%- endfor -%}
+
+  <h2 class="disp" style="font-size:var(--t-lg);margin-top:40px">Agregar dirección</h2>
+  {%- form 'customer_address', customer.new_address -%}
+    <div class="stack">
+      <div class="field"><label class="mono" for="a-nom">Nombre</label><input class="select" id="a-nom" name="address[first_name]" type="text"></div>
+      <div class="field"><label class="mono" for="a-ape">Apellido</label><input class="select" id="a-ape" name="address[last_name]" type="text"></div>
+      <div class="field"><label class="mono" for="a-calle">Calle y número</label><input class="select" id="a-calle" name="address[address1]" type="text"></div>
+      <div class="field"><label class="mono" for="a-col">Colonia</label><input class="select" id="a-col" name="address[address2]" type="text"></div>
+      <div class="field"><label class="mono" for="a-ciu">Ciudad</label><input class="select" id="a-ciu" name="address[city]" type="text"></div>
+      <div class="field"><label class="mono" for="a-est">Estado</label><input class="select" id="a-est" name="address[province]" type="text"></div>
+      <div class="field"><label class="mono" for="a-cp">Código postal</label><input class="select" id="a-cp" name="address[zip]" type="text" inputmode="numeric"></div>
+      <div class="field"><label class="mono" for="a-pais">País</label><input class="select" id="a-pais" name="address[country]" type="text" value="Mexico"></div>
+      <div class="field"><label class="mono" for="a-tel">Teléfono</label><input class="select" id="a-tel" name="address[phone]" type="tel"></div>
+      <button class="btn" type="submit">Guardar dirección</button>
+    </div>
+  {%- endform -%}
+</div>

@@ -1,0 +1,33 @@
+<div class="wrap page">
+  <span class="mono eyebrow">Búsqueda</span>
+  <h1 class="disp">¿Qué buscas?</h1>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="news-form" style="max-width:520px;margin-bottom:40px">
+    <label class="mono" for="q" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Buscar</label>
+    <input class="select" id="q" name="q" type="search" value="{{ search.terms | escape }}" placeholder="Modelo, marca o talla">
+    <button class="btn" type="submit">Buscar</button>
+  </form>
+
+  {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
+      {%- if search.results.size > 0 -%}
+        <p class="mono faint" style="margin-bottom:24px">{{ search.results_count }} resultados para &ldquo;{{ search.terms }}&rdquo;</p>
+        <div class="grid" style="--cols:4">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', product: item, forloop: forloop -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          <nav class="mono" style="display:flex;gap:16px;justify-content:center;margin-top:48px" aria-label="Paginación">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Anterior</a>{%- endif -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Siguiente &rarr;</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p class="dim">No encontramos nada para &ldquo;{{ search.terms }}&rdquo;.</p>
+      {%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</div>

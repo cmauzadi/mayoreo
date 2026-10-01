@@ -1,0 +1,15 @@
+<div class="wrap page page-narrow">
+  <span class="mono eyebrow">Mi cuenta</span>
+  <h1 class="disp">Crear cuenta</h1>
+  <p class="dim" style="margin-bottom:24px">Si vas a comprar al mayoreo, pide tu lista de precios desde la portada: aprobamos la cuenta y la etiquetamos como mayorista.</p>
+  {%- form 'create_customer' -%}
+    {%- if form.errors -%}<div class="form-error mono" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="stack">
+      <div class="field"><label class="mono" for="r-nom">Nombre</label><input class="select" id="r-nom" name="customer[first_name]" type="text" autocomplete="given-name"></div>
+      <div class="field"><label class="mono" for="r-ape">Apellido</label><input class="select" id="r-ape" name="customer[last_name]" type="text" autocomplete="family-name"></div>
+      <div class="field"><label class="mono" for="r-mail">Correo</label><input class="select" id="r-mail" name="customer[email]" type="email" autocomplete="email" required></div>
+      <div class="field"><label class="mono" for="r-pass">Contraseña</label><input class="select" id="r-pass" name="customer[password]" type="password" autocomplete="new-password" required></div>
+      <button class="btn" type="submit">Crear cuenta</button>
+    </div>
+  {%- endform -%}
+</div>

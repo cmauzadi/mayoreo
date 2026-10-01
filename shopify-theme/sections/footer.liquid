@@ -1,0 +1,93 @@
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <span class="logo" style="margin:0 0 16px">
+          {%- if settings.logo != blank -%}
+            <img class="logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_ancho }}" height="44" style="max-width:{{ settings.logo_ancho }}px;height:auto" loading="lazy">
+          {%- else -%}
+            <span class="logo-mark" aria-hidden="true">{{ shop.name | slice: 0, 2 | upcase }}</span>
+            <span class="logo-type"><span class="logo-word">{{ shop.name }}</span><span class="logo-sub">{{ settings.tagline }}</span></span>
+          {%- endif -%}
+        </span>
+
+        {%- if section.settings.descripcion != blank -%}
+          <p class="dim" style="font-size:var(--t-sm);max-width:34ch;margin:0">{{ section.settings.descripcion }}</p>
+        {%- endif -%}
+
+        {%- if shop.enabled_payment_types.size > 0 -%}
+          <div class="pay" aria-label="Formas de pago">
+            {%- for type in shop.enabled_payment_types -%}
+              {{ type | payment_type_svg_tag: class: 'pay-icon' }}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_tiktok != blank -%}
+          <div class="pay" style="margin-top:12px">
+            {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}"><span>Instagram</span></a>{%- endif -%}
+            {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}"><span>Facebook</span></a>{%- endif -%}
+            {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}"><span>TikTok</span></a>{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- assign menu = linklists[block.settings.menu] -%}
+        <div {{ block.shopify_attributes }}>
+          <h4 class="mono">{{ block.settings.titulo }}</h4>
+          <ul>
+            {%- for link in menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="footer-bot">
+      <span class="mono faint">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+        {%- if section.settings.legal != blank %} · {{ section.settings.legal }}{% endif -%}
+      </span>
+      {%- if section.settings.sello != blank -%}
+        <span class="mono demo-stamp">{{ section.settings.sello }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pie de página",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "textarea", "id": "descripcion", "label": "Descripción", "default": "Tenis urbanos, retro y deportivos. Envíos a toda la República." },
+    { "type": "text", "id": "legal", "label": "Línea legal", "default": "Aviso de privacidad · Términos y condiciones" },
+    {
+      "type": "text",
+      "id": "sello",
+      "label": "Sello de demostración",
+      "default": "Demo de diseño — contenido de ejemplo",
+      "info": "Déjalo vacío cuando la tienda ya tenga contenido real."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Columna de menú",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Comprar" },
+        { "type": "link_list", "id": "menu", "label": "Menú", "default": "footer" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "titulo": "Comprar" } },
+      { "type": "menu", "settings": { "titulo": "Mayoreo" } },
+      { "type": "menu", "settings": { "titulo": "Ayuda" } }
+    ]
+  }
+}
+{% endschema %}

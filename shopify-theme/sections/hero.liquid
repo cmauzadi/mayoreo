@@ -1,0 +1,144 @@
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="mono eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      <h1 class="disp">
+        {%- assign lineas = section.settings.titulo | newline_to_br | split: '<br />' -%}
+        {%- for linea in lineas -%}
+          {%- assign t = linea | strip -%}
+          {%- if t != blank -%}
+            <span class="ln{% if forloop.last %} hl{% endif %}">{{ t }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </h1>
+
+      {%- if section.settings.texto != blank -%}
+        <p class="hero-lead">{{ section.settings.texto }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.mostrar_carril -%}
+        <div class="hero-lane">
+          <span class="mono hero-lane-label">{{ section.settings.carril_label }}</span>
+          <div class="lane lane-lg" role="group" aria-label="Carril de compra, portada">
+            <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo · 1 par</button>
+            <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo · {{ settings.moq }}+ pares</button>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="hero-cta">
+        {%- if section.settings.cta1_texto != blank -%}
+          <a class="btn" href="{{ section.settings.cta1_url | default: '#' }}">{{ section.settings.cta1_texto }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_texto != blank -%}
+          <a class="btn btn-ghost" href="{{ section.settings.cta2_url | default: '#' }}">{{ section.settings.cta2_texto }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div style="margin-bottom:12px">
+        {%- render 'slate', image: section.settings.imagen, ratio: '4/5', num: '01', label: 'Foto principal · 4:5', alt: section.settings.titulo -%}
+      </div>
+
+      {%- if section.settings.mostrar_drop -%}
+        <div class="drop-card">
+          <div class="drop-head">
+            <span class="mono live-dot"><i aria-hidden="true"></i> {{ section.settings.drop_titulo }}</span>
+            <span class="mono faint">{{ section.settings.drop_nota }}</span>
+          </div>
+          <div class="countdown" id="countdown" role="timer" aria-live="off"
+               data-dia="{{ section.settings.drop_dia }}" data-hora="{{ section.settings.drop_hora }}"
+               aria-label="Cuenta regresiva al próximo lanzamiento">
+            <div class="cd-cell"><span class="cd-num" data-cd="d">00</span><span class="cd-lab">Días</span></div>
+            <div class="cd-cell"><span class="cd-num" data-cd="h">00</span><span class="cd-lab">Hrs</span></div>
+            <div class="cd-cell"><span class="cd-num" data-cd="m">00</span><span class="cd-lab">Min</span></div>
+            <div class="cd-cell"><span class="cd-num" data-cd="s">00</span><span class="cd-lab">Seg</span></div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="wrap">
+      <div class="hero-stats">
+        {%- for block in section.blocks -%}
+          <div class="hero-stat" {{ block.shopify_attributes }}>
+            <b>{{ block.settings.dato }}</b>
+            <span class="mono faint">{{ block.settings.etiqueta }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Portada",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Tenis urbanos · Envíos a todo México" },
+    {
+      "type": "textarea",
+      "id": "titulo",
+      "label": "Título",
+      "default": "Pares\nque se\nvenden solos",
+      "info": "Un renglón por línea. El último renglón se pinta con el color de acento."
+    },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Catálogo de tenis urbanos, retro y deportivos. Compra un par o surte tu tienda con corrida completa: mismo almacén, dos listas de precio." },
+    { "type": "image_picker", "id": "imagen", "label": "Imagen principal", "info": "Vertical 4:5. Sin imagen se muestra un marcador de posición." },
+    { "type": "header", "content": "Botones" },
+    { "type": "text", "id": "cta1_texto", "label": "Botón principal", "default": "Ver catálogo" },
+    { "type": "url", "id": "cta1_url", "label": "Enlace del botón principal" },
+    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Precios de mayoreo" },
+    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
+    { "type": "header", "content": "Switch de carril" },
+    { "type": "checkbox", "id": "mostrar_carril", "label": "Mostrar en la portada", "default": true },
+    { "type": "text", "id": "carril_label", "label": "Texto encima del switch", "default": "Elige cómo quieres comprar" },
+    { "type": "header", "content": "Cuenta regresiva" },
+    { "type": "checkbox", "id": "mostrar_drop", "label": "Mostrar cuenta regresiva", "default": true },
+    { "type": "text", "id": "drop_titulo", "label": "Título", "default": "Próximo drop" },
+    { "type": "text", "id": "drop_nota", "label": "Nota", "default": "Viernes 20:00 h" },
+    {
+      "type": "select",
+      "id": "drop_dia",
+      "label": "Día del drop",
+      "options": [
+        { "value": "1", "label": "Lunes" },
+        { "value": "2", "label": "Martes" },
+        { "value": "3", "label": "Miércoles" },
+        { "value": "4", "label": "Jueves" },
+        { "value": "5", "label": "Viernes" },
+        { "value": "6", "label": "Sábado" },
+        { "value": "0", "label": "Domingo" }
+      ],
+      "default": "5"
+    },
+    { "type": "range", "id": "drop_hora", "label": "Hora del drop", "min": 0, "max": 23, "step": 1, "unit": "h", "default": 20 }
+  ],
+  "blocks": [
+    {
+      "type": "dato",
+      "name": "Dato",
+      "settings": [
+        { "type": "text", "id": "dato", "label": "Dato", "default": "24–72 h" },
+        { "type": "text", "id": "etiqueta", "label": "Etiqueta", "default": "Entrega zona metro" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Portada" }],
+  "default": {
+    "blocks": [
+      { "type": "dato", "settings": { "dato": "24–72 h", "etiqueta": "Entrega zona metro" } },
+      { "type": "dato", "settings": { "dato": "6 pares", "etiqueta": "Mínimo de mayoreo" } },
+      { "type": "dato", "settings": { "dato": "25–30 MX", "etiqueta": "Corrida completa" } },
+      { "type": "dato", "settings": { "dato": "30 días", "etiqueta": "Cambios en menudeo" } }
+    ]
+  }
+}
+{% endschema %}

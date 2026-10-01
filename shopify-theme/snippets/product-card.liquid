@@ -1,0 +1,90 @@
+{%- comment -%}
+  Tarjeta de producto real.
+  Precio de mayoreo: metacampo custom.precio_mayoreo (decimal, en pesos).
+  Si el producto no lo tiene, se calcula con el descuento de respaldo del tema.
+{%- endcomment -%}
+{%- liquid
+  assign factor = 100 | minus: settings.descuento_mayoreo
+  assign mf = product.metafields.custom.precio_mayoreo
+  if mf != blank
+    assign precio_may = mf.value | times: 100 | round
+  else
+    assign precio_may = product.price | times: factor | divided_by: 100
+  endif
+
+  assign ahorro = 0
+  if product.price > 0
+    assign ahorro = product.price | minus: precio_may | times: 100 | divided_by: product.price
+  endif
+  assign msi = product.price | divided_by: 12
+  assign cats = product.tags | join: ' ' | downcase
+-%}
+
+<article class="card" data-cat="{{ cats | escape }}" data-variant="">
+  <div class="card-media">
+    <div class="card-badges">
+      {%- unless product.available -%}
+        <span class="badge badge-low">Agotado</span>
+      {%- else -%}
+        {%- if product.tags contains 'nuevo' -%}<span class="badge badge-hot">Nuevo</span>{%- endif -%}
+        {%- if product.tags contains 'pocos' -%}<span class="badge badge-low">Últimos pares</span>{%- endif -%}
+        {%- if product.compare_at_price > product.price -%}<span class="badge">Rebaja</span>{%- endif -%}
+      {%- endunless -%}
+    </div>
+
+    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      {%- render 'slate', image: product.featured_image, ratio: '4/5', num: forloop.index0, label: 'Foto producto · 4:5', alt: product.title -%}
+    </a>
+
+    <button class="btn btn-sm btn-block quick" type="button"
+            data-add="{{ product.title | escape }}" data-moq="{{ settings.moq }}"
+            {% unless product.available %}disabled{% endunless %}>
+      <span class="p-retail">{% if product.available %}Agregar al carrito{% else %}Agotado{% endif %}</span>
+      <span class="p-whole">{% if product.available %}Agregar {{ settings.moq }} pares{% else %}Agotado{% endif %}</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div class="card-sku mono">
+      <span>{{ product.selected_or_first_available_variant.sku | default: product.handle | truncate: 18 }}</span>
+      {%- if product.metafields.custom.pares_por_caja != blank -%}
+        <span>Caja {{ product.metafields.custom.pares_por_caja }}</span>
+      {%- endif -%}
+    </div>
+
+    <h3 class="card-name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    {%- if product.metafields.custom.color != blank -%}
+      <p class="card-color">{{ product.metafields.custom.color }}</p>
+    {%- endif -%}
+
+    {%- if product.variants.size > 1 -%}
+      <div class="sizes" role="group" aria-label="Tallas de {{ product.title | escape }}">
+        {%- for variant in product.variants -%}
+          <button class="size" type="button" aria-pressed="false"
+                  data-variant="{{ variant.id }}"
+                  aria-label="Talla {{ variant.title | escape }}{% unless variant.available %}, agotada{% endunless %}"
+                  {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="price">
+      <div class="p-retail">
+        <div class="p-row">
+          <span class="p-main">{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <span class="p-was">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+        <span class="mono p-note">o 12 MSI de {{ msi | money }}</span>
+      </div>
+      <div class="p-whole">
+        <div class="p-row">
+          <span class="p-main">{{ precio_may | money }}</span>
+          <span class="p-unit">/ par</span>
+        </div>
+        <span class="mono p-note">Mínimo {{ settings.moq }} pares · <span class="p-save">ahorras {{ ahorro }}%</span></span>
+      </div>
+    </div>
+  </div>
+</article>

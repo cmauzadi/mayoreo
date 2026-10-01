@@ -1,0 +1,26 @@
+<div class="wrap page">
+  <span class="mono eyebrow">Mi cuenta</span>
+  <h1 class="disp">Hola, {{ customer.first_name | default: customer.email }}</h1>
+  {%- if customer.tags contains 'mayorista' -%}
+    <p class="mono" style="color:var(--lime)">Cuenta de mayorista activa · precios por lista aplicados</p>
+  {%- endif -%}
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin:24px 0 40px">
+    <a class="btn btn-ghost btn-sm" href="{{ routes.account_addresses_url }}">Mis direcciones</a>
+    <a class="btn btn-ghost btn-sm" href="{{ routes.account_logout_url }}">Cerrar sesión</a>
+  </div>
+
+  <h2 class="disp" style="font-size:var(--t-lg)">Pedidos</h2>
+  {%- if customer.orders.size > 0 -%}
+    {%- for order in customer.orders -%}
+      <div class="line" style="grid-template-columns:1fr auto">
+        <div>
+          <a class="line-title" href="{{ order.customer_url }}">Pedido {{ order.name }}</a>
+          <div class="mono faint">{{ order.created_at | date: '%d.%m.%Y' }} · {{ order.financial_status_label }}</div>
+        </div>
+        <div class="mono">{{ order.total_price | money }}</div>
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    <p class="dim">Todavía no tienes pedidos.</p>
+  {%- endif -%}
+</div>

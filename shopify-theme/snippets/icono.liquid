@@ -1,0 +1,16 @@
+{%- case nombre -%}
+  {%- when 'envio' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M2 7.5h11v9H2zM13 10h4.4l3.6 3.4v3.1h-8z"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>
+  {%- when 'caja' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 8.2 12 3.5l9 4.7v7.6L12 20.5 3 15.8z"/><path d="M3 8.2 12 13l9-4.8M12 13v7.5"/></svg>
+  {%- when 'garantia' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3.2l7.2 2.6v5.4c0 4.3-3 7.6-7.2 9.1-4.2-1.5-7.2-4.8-7.2-9.1V5.8z"/><path d="M9.2 12.1l2 2 3.6-3.9"/></svg>
+  {%- when 'pago' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="M3.5 10h17M7 14h3.5"/></svg>
+  {%- when 'tienda' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 9.5V20h16V9.5M3 9.5 5 4h14l2 5.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/></svg>
+  {%- when 'reloj' -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.3l3.4 2"/></svg>
+  {%- else -%}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/></svg>
+{%- endcase -%}

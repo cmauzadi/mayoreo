@@ -1,0 +1,13 @@
+<div class="wrap page page-narrow">
+  <span class="mono eyebrow">Mi cuenta</span>
+  <h1 class="disp">Activa tu cuenta</h1>
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}<div class="form-error mono" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="stack">
+      <div class="field"><label class="mono" for="ac-1">Contraseña</label><input class="select" id="ac-1" name="customer[password]" type="password" autocomplete="new-password" required></div>
+      <div class="field"><label class="mono" for="ac-2">Confirmar contraseña</label><input class="select" id="ac-2" name="customer[password_confirmation]" type="password" autocomplete="new-password" required></div>
+      <button class="btn" type="submit">Activar cuenta</button>
+      <button class="btn btn-ghost" type="submit" name="decline">Rechazar invitación</button>
+    </div>
+  {%- endform -%}
+</div>

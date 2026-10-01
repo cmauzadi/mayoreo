@@ -1,0 +1,36 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="ticker" role="region" aria-label="Avisos de la tienda">
+    <div class="ticker-track">
+      <div class="ticker-group" data-marquee-group>
+        {%- for block in section.blocks -%}
+          <span class="ticker-item" {{ block.shopify_attributes }}>{{ block.settings.texto }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Barra de avisos",
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "mensaje",
+      "name": "Mensaje",
+      "settings": [
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Envío gratis en compras desde $1,499" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "mensaje", "settings": { "texto": "Envío gratis en compras desde $1,499" } },
+      { "type": "mensaje", "settings": { "texto": "Mayoreo desde 6 pares surtidos" } },
+      { "type": "mensaje", "settings": { "texto": "Modelos nuevos cada viernes 20:00" } },
+      { "type": "mensaje", "settings": { "texto": "12 meses sin intereses con tarjetas participantes" } },
+      { "type": "mensaje", "settings": { "texto": "Facturamos CFDI 4.0" } }
+    ]
+  }
+}
+{% endschema %}

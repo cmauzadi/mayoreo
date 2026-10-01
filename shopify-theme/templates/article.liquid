@@ -1,0 +1,8 @@
+<div class="wrap page page-narrow">
+  <span class="mono eyebrow">{{ article.published_at | date: '%d.%m.%Y' }}</span>
+  <h1 class="disp">{{ article.title }}</h1>
+  {%- if article.image -%}
+    <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.title | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}" loading="eager" style="margin:32px 0;border-radius:var(--r);height:auto">
+  {%- endif -%}
+  <div class="rte">{{ article.content }}</div>
+</div>

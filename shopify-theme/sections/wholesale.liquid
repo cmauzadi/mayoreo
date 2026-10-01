@@ -1,0 +1,172 @@
+<div class="hazard" aria-hidden="true"></div>
+<section class="wholesale section" id="mayoreo">
+  <div class="wrap ws-grid">
+    <div class="ws-head reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="mono eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="disp">{{ section.settings.titulo }}</h2>
+      {%- if section.settings.texto != blank -%}<p>{{ section.settings.texto }}</p>{%- endif -%}
+
+      {%- assign escalas = section.blocks | where: 'type', 'escala' -%}
+      {%- if escalas.size > 0 -%}
+        <div class="tiers">
+          {%- for block in escalas -%}
+            <div class="tier" {{ block.shopify_attributes }}>
+              <span class="tier-qty">{{ block.settings.rango }}</span>
+              <span class="tier-mid">
+                <b>{{ block.settings.titulo }}</b>
+                <span class="mono faint">{{ block.settings.nota }}</span>
+              </span>
+              <span class="tier-price">
+                <b>{{ block.settings.precio }}</b>
+                <span class="mono faint">{{ block.settings.ahorro }}</span>
+              </span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.aviso_ejemplo != blank -%}
+        <p class="mono faint" style="margin-top:16px">
+          <span class="ph-tag">Ejemplo</span> {{ section.settings.aviso_ejemplo }}
+        </p>
+      {%- endif -%}
+
+      {%- assign pasos = section.blocks | where: 'type', 'paso' -%}
+      {%- if pasos.size > 0 -%}
+        <ol class="steps">
+          {%- for block in pasos -%}
+            <li {{ block.shopify_attributes }}>
+              <span><b>{{ block.settings.titulo }}</b><span>{{ block.settings.texto }}</span></span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+    </div>
+
+    <div class="ws-form reveal">
+      {%- if section.settings.form_eyebrow != blank -%}
+        <span class="mono eyebrow">{{ section.settings.form_eyebrow }}</span>
+      {%- endif -%}
+      <h3 class="disp" style="font-size:var(--t-lg);margin:12px 0 24px">{{ section.settings.form_titulo }}</h3>
+
+      {%- form 'contact', id: 'wsForm' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="form-ok">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.6 2.6L16 9.6"/></svg>
+            <div>
+              <b>Solicitud registrada</b>
+              <p>{{ section.settings.form_exito }}</p>
+            </div>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="form-error mono" role="alert">
+              Revisa los campos marcados.
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="form-grid">
+            <div class="field">
+              <label class="mono" for="ws-nombre">Nombre</label>
+              <input id="ws-nombre" name="contact[name]" type="text" placeholder="Tu nombre" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label class="mono" for="ws-negocio">Negocio</label>
+              <input id="ws-negocio" name="contact[Negocio]" type="text" placeholder="Nombre de la tienda" autocomplete="organization" required>
+            </div>
+            <div class="field">
+              <label class="mono" for="ws-email">Correo</label>
+              <input id="ws-email" name="contact[email]" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label class="mono" for="ws-tel">WhatsApp</label>
+              <input id="ws-tel" name="contact[phone]" type="tel" inputmode="tel" pattern="[0-9 ()+-]{10,}" placeholder="10 dígitos" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label class="mono" for="ws-estado">Estado</label>
+              <select id="ws-estado" name="contact[Estado]" required>
+                <option value="">Selecciona</option>
+                {%- assign estados = section.settings.estados | split: ',' -%}
+                {%- for e in estados -%}<option>{{ e | strip }}</option>{%- endfor -%}
+              </select>
+            </div>
+            <div class="field">
+              <label class="mono" for="ws-vol">Pares que compras al mes</label>
+              <select id="ws-vol" name="contact[Volumen]" required>
+                <option value="">Selecciona</option>
+                {%- assign vols = section.settings.volumenes | split: ',' -%}
+                {%- for v in vols -%}<option>{{ v | strip }}</option>{%- endfor -%}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-foot">
+            <button class="btn btn-block" type="submit">{{ section.settings.form_boton }}</button>
+            {%- if settings.whatsapp != blank -%}
+              <a class="btn btn-ghost btn-block" href="https://wa.me/{{ settings.whatsapp }}" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+            {%- endif -%}
+            {%- if section.settings.form_nota != blank -%}
+              <span class="mono faint">{{ section.settings.form_nota }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+<div class="hazard" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Mayoreo",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Mayoreo" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Surte tu tienda" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Trabajamos con tiendas de barrio, bazares, tianguis y vendedores en línea. Entre más pares, mejor precio por par. Sin contrato, sin cuota de membresía." },
+    { "type": "text", "id": "aviso_ejemplo", "label": "Aviso de precios de ejemplo", "default": "Sustituye estos rangos y precios por tu lista real antes de publicar.", "info": "Déjalo vacío cuando las escalas ya sean reales." },
+    { "type": "header", "content": "Formulario" },
+    { "type": "text", "id": "form_eyebrow", "label": "Antetítulo", "default": "Solicita tu lista de precios" },
+    { "type": "text", "id": "form_titulo", "label": "Título", "default": "Abre tu cuenta de mayorista" },
+    { "type": "text", "id": "form_boton", "label": "Botón", "default": "Recibir lista de precios" },
+    { "type": "textarea", "id": "form_exito", "label": "Mensaje de éxito", "default": "En menos de 24 horas te mandamos el catálogo y la lista de precios de mayorista." },
+    { "type": "textarea", "id": "form_nota", "label": "Nota al pie", "default": "Revisamos cada solicitud a mano. Al aprobarla etiquetamos tu cuenta como mayorista y los precios cambian solos." },
+    { "type": "textarea", "id": "estados", "label": "Estados", "default": "Ciudad de México, Estado de México, Jalisco, Nuevo León, Puebla, Guanajuato, Otro", "info": "Separados por coma." },
+    { "type": "textarea", "id": "volumenes", "label": "Rangos de volumen", "default": "6 a 11 pares, 12 a 35 pares, 36 a 99 pares, 100 pares o más", "info": "Separados por coma." }
+  ],
+  "blocks": [
+    {
+      "type": "escala",
+      "name": "Escala de precio",
+      "settings": [
+        { "type": "text", "id": "rango", "label": "Rango", "default": "6–11" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Pares surtidos" },
+        { "type": "text", "id": "nota", "label": "Nota", "default": "Modelos y tallas a tu elección" },
+        { "type": "text", "id": "precio", "label": "Precio", "default": "$1,120 / par" },
+        { "type": "text", "id": "ahorro", "label": "Ahorro", "default": "−38% vs menudeo" }
+      ]
+    },
+    {
+      "type": "paso",
+      "name": "Paso del proceso",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Mándanos tus datos" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Mayoreo" }],
+  "default": {
+    "blocks": [
+      { "type": "escala", "settings": { "rango": "6–11", "titulo": "Pares surtidos", "nota": "Modelos y tallas a tu elección", "precio": "$1,120 / par", "ahorro": "−38% vs menudeo" } },
+      { "type": "escala", "settings": { "rango": "12–35", "titulo": "Caja completa", "nota": "Corrida 25–30 MX · envío gratis", "precio": "$995 / par", "ahorro": "−45% vs menudeo" } },
+      { "type": "escala", "settings": { "rango": "36+", "titulo": "Distribuidor", "nota": "Crédito a 15 días con historial", "precio": "$845 / par", "ahorro": "−53% vs menudeo" } },
+      { "type": "paso", "settings": { "titulo": "Mándanos tus datos", "texto": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil." } },
+      { "type": "paso", "settings": { "titulo": "Recibe catálogo y lista de precios", "texto": "PDF con existencias reales y corridas disponibles." } },
+      { "type": "paso", "settings": { "titulo": "Arma tu pedido", "texto": "Mezcla modelos y tallas hasta llegar al mínimo." } },
+      { "type": "paso", "settings": { "titulo": "Pagas y se surte", "texto": "Transferencia o depósito. Sale de almacén en 24–72 h." } }
+    ]
+  }
+}
+{% endschema %}

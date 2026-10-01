@@ -1,0 +1,70 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Calle 23",
+    "theme_version": "1.0.0",
+    "theme_author": "Demo",
+    "theme_documentation_url": "https://github.com/cmauzadi/mayoreo",
+    "theme_support_url": "https://github.com/cmauzadi/mayoreo"
+  },
+  {
+    "name": "Marca",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "SVG o PNG con fondo transparente. Si lo dejas vacío se usa el nombre de la tienda en tipografía."
+      },
+      { "type": "range", "id": "logo_ancho", "label": "Ancho del logo", "min": 80, "max": 260, "step": 10, "unit": "px", "default": 140 },
+      { "type": "text", "id": "tagline", "label": "Bajada del logo", "default": "Mayoreo & Menudeo" },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  },
+  {
+    "name": "Color y tipografía",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Los dos carriles"
+      },
+      {
+        "type": "paragraph",
+        "content": "La página usa un acento distinto para cada carril. Cambiar el switch Menudeo/Mayoreo cambia el color de toda la tienda."
+      },
+      { "type": "color", "id": "color_menudeo", "label": "Acento de menudeo", "default": "#FF4D17" },
+      { "type": "color", "id": "color_mayoreo", "label": "Acento de mayoreo", "default": "#C8FF2E" },
+      {
+        "type": "select",
+        "id": "display_width",
+        "label": "Ancho de la tipografía de títulos",
+        "options": [
+          { "value": "78", "label": "Condensada" },
+          { "value": "112", "label": "Normal" },
+          { "value": "125", "label": "Ancha" }
+        ],
+        "default": "112"
+      }
+    ]
+  },
+  {
+    "name": "Mayoreo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "El precio de mayoreo se lee del metacampo custom.precio_mayoreo de cada producto. Si un producto no lo tiene, se calcula con el descuento de abajo."
+      },
+      { "type": "range", "id": "descuento_mayoreo", "label": "Descuento de respaldo", "min": 10, "max": 70, "step": 1, "unit": "%", "default": 40 },
+      { "type": "range", "id": "moq", "label": "Pedido mínimo de mayoreo", "min": 1, "max": 48, "step": 1, "unit": "pares", "default": 6 },
+      { "type": "text", "id": "whatsapp", "label": "WhatsApp de mayoreo", "info": "Sólo dígitos con lada país, por ejemplo 5215512345678" }
+    ]
+  },
+  {
+    "name": "Redes sociales",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok" }
+    ]
+  }
+]

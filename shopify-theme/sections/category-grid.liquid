@@ -1,0 +1,76 @@
+<section class="section" id="categorias">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="mono eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="disp">{{ section.settings.titulo }}</h2>
+      </div>
+      {%- if section.settings.cta_texto != blank -%}
+        <a class="btn btn-ghost btn-sm" href="{{ section.settings.cta_url | default: '#' }}">{{ section.settings.cta_texto }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="cats reveal">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = collections[block.settings.coleccion]
+          assign titulo = block.settings.titulo | default: col.title
+          assign imagen = block.settings.imagen | default: col.featured_image
+          assign num = forloop.index | plus: 1 | prepend: '0' | slice: -2, 2
+        -%}
+        <a class="cat{% if forloop.first %} cat-a{% endif %}" href="{{ col.url | default: '#' }}" {{ block.shopify_attributes }}>
+          <div class="cat-media" style="height:100%">
+            {%- if imagen != blank -%}
+              <img class="slate-img" src="{{ imagen | image_url: width: 1000 }}" alt="{{ titulo | escape }}"
+                   loading="lazy" width="{{ imagen.width }}" height="{{ imagen.height }}" style="height:100%;min-height:{% if forloop.first %}392{% else %}190{% endif %}px">
+            {%- else -%}
+              <div class="slate" style="height:100%;min-height:{% if forloop.first %}392{% else %}190{% endif %}px;aspect-ratio:auto">
+                <span class="slate-num" aria-hidden="true">{{ num }}</span>
+                <span class="slate-tick" aria-hidden="true"></span>
+                <span class="ph-tag slate-tag">Foto categoría</span>
+              </div>
+            {%- endif -%}
+          </div>
+          <span class="cat-label"><b>{{ titulo }}</b><span class="cat-arrow mono">Ver &rarr;</span></span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categorías",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Por categoría" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Busca por tipo de pisada" },
+    { "type": "text", "id": "cta_texto", "label": "Botón", "default": "Ver todo el catálogo" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón" }
+  ],
+  "blocks": [
+    {
+      "type": "categoria",
+      "name": "Categoría",
+      "settings": [
+        { "type": "collection", "id": "coleccion", "label": "Colección" },
+        { "type": "text", "id": "titulo", "label": "Título", "info": "Si lo dejas vacío se usa el nombre de la colección." },
+        { "type": "image_picker", "id": "imagen", "label": "Imagen", "info": "Si la dejas vacía se usa la imagen de la colección." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Categorías" }],
+  "default": {
+    "blocks": [
+      { "type": "categoria", "settings": { "titulo": "Retro" } },
+      { "type": "categoria", "settings": { "titulo": "Running" } },
+      { "type": "categoria", "settings": { "titulo": "Skate" } },
+      { "type": "categoria", "settings": { "titulo": "Básquet" } },
+      { "type": "categoria", "settings": { "titulo": "Niños" } }
+    ]
+  }
+}
+{% endschema %}
+{% stylesheet %}
+.cats .cat-media .slate-img { object-fit: cover; width: 100%; }
+{% endstylesheet %}

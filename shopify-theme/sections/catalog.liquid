@@ -1,0 +1,98 @@
+{%- liquid
+  assign coleccion = collections[section.settings.coleccion]
+  assign productos = coleccion.products
+-%}
+
+<section class="section" id="catalogo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="mono eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="disp">{{ section.settings.titulo }}</h2>
+      </div>
+      {%- if section.settings.nota != blank -%}
+        <p class="mono faint" style="max-width:34ch;margin:0">{{ section.settings.nota }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="filters reveal" role="group" aria-label="Filtrar catálogo">
+        <button class="chip" type="button" data-filter="todos" aria-pressed="true">Todos</button>
+        {%- for block in section.blocks -%}
+          <button class="chip" type="button" data-filter="{{ block.settings.tag | downcase | escape }}" aria-pressed="false" {{ block.shopify_attributes }}>
+            {{ block.settings.etiqueta }}
+          </button>
+        {%- endfor -%}
+        <span class="mono filters-note" id="filterCount">
+          {%- if productos.size > 0 -%}{{ productos.size }} modelos{%- else -%}8 modelos{%- endif -%}
+        </span>
+      </div>
+    {%- endif -%}
+
+    <div class="grid reveal" style="--cols:{{ section.settings.columnas }}">
+      {%- if productos.size > 0 -%}
+        {%- for product in productos limit: section.settings.limite -%}
+          {%- render 'product-card', product: product, forloop: forloop -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- render 'demo-cards' -%}
+      {%- endif -%}
+    </div>
+
+    {%- if productos.size == 0 -%}
+      <p class="mono faint" style="margin-top:24px;text-align:center">
+        <span class="ph-tag">Pendiente</span>
+        Elige una colección en el personalizador para reemplazar estas tarjetas de ejemplo.
+      </p>
+    {%- elsif coleccion.url != blank -%}
+      <div style="display:flex;justify-content:center;margin-top:48px">
+        <a class="btn btn-ghost" href="{{ coleccion.url }}">Ver toda la colección</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Catálogo",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "collection", "id": "coleccion", "label": "Colección", "info": "Sin colección se muestran tarjetas de ejemplo." },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Catálogo" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Lo que más sale" },
+    { "type": "text", "id": "nota", "label": "Nota", "default": "Los precios cambian según el carril que elijas arriba." },
+    { "type": "range", "id": "limite", "label": "Productos a mostrar", "min": 4, "max": 24, "step": 4, "default": 8 },
+    {
+      "type": "select",
+      "id": "columnas",
+      "label": "Columnas en escritorio",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filtro",
+      "name": "Filtro",
+      "settings": [
+        { "type": "text", "id": "etiqueta", "label": "Texto del filtro", "default": "Retro" },
+        { "type": "text", "id": "tag", "label": "Etiqueta del producto", "default": "retro", "info": "Debe coincidir con una etiqueta (tag) de tus productos." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Catálogo" }],
+  "default": {
+    "blocks": [
+      { "type": "filtro", "settings": { "etiqueta": "Retro", "tag": "retro" } },
+      { "type": "filtro", "settings": { "etiqueta": "Running", "tag": "running" } },
+      { "type": "filtro", "settings": { "etiqueta": "Skate", "tag": "skate" } },
+      { "type": "filtro", "settings": { "etiqueta": "Básquet", "tag": "basquet" } },
+      { "type": "filtro", "settings": { "etiqueta": "Casual", "tag": "casual" } }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+<div class="wrap page" style="text-align:center">
+  <span class="mono eyebrow" style="justify-content:center">Tarjeta de regalo</span>
+  <h1 class="disp">{{ gift_card.balance | money }}</h1>
+  <p class="dim">Código: <span class="mono">{{ gift_card.code | format_code }}</span></p>
+  {%- if gift_card.expires_on -%}
+    <p class="mono faint">Vence el {{ gift_card.expires_on | date: '%d.%m.%Y' }}</p>
+  {%- endif -%}
+  <a class="btn" href="{{ shop.url }}" style="margin-top:24px">Ir a la tienda</a>
+</div>

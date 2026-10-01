@@ -40,54 +40,45 @@ Los nombres de modelo, SKU, precios y políticas son **inventados para el demo**
 
 ---
 
-## Migración a Shopify
+## Migración a Shopify — ya está hecha
 
-### Secciones
+El tema completo vive en `shopify-theme/` y el paquete listo para subir es
+`calle23-shopify-theme.zip`. Pasa `theme-check` de Shopify sin errores ni
+advertencias en sus 44 archivos.
 
-| Sección del demo | Sección de tema Shopify |
+Para subirlo: **Tienda online → Temas → Agregar tema → Subir archivo ZIP**.
+Las instrucciones completas de configuración están en `shopify-theme/README.md`.
+
+Lo que cambia respecto al demo estático:
+
+| Demo HTML | Tema de Shopify |
 |---|---|
-| Marquesina superior | Announcement bar |
-| Encabezado | Header |
-| Portada | Image banner (el contador requiere Custom Liquid) |
-| Franja de marcas | Logo list / Multicolumn |
-| Categorías | Collection list |
-| Catálogo | Featured collection |
-| Banda de mayoreo | Custom Liquid + formulario `customer` o app B2B |
-| Lookbook | Image with text |
-| Servicios | Multicolumn |
-| Instagram | App de contenido social |
-| Preguntas frecuentes | Collapsible content |
-| Boletín | Email signup |
-| Pie | Footer |
+| Textos en el código | Secciones editables desde el personalizador |
+| Tarjetas de producto inventadas | Productos reales de la colección que elijas |
+| Precio de mayoreo inventado | Metacampo `custom.precio_mayoreo` o descuento de respaldo |
+| Formulario que no manda nada | Formulario de contacto real de Shopify |
+| Boletín falso | Alta de cliente real con etiqueta `newsletter` |
+| Carrito simulado | `/cart/add.js` contra el carrito real |
+| Íconos de pago pendientes | Íconos reales según los métodos activos de la tienda |
+| Tipografías desde Google Fonts | Tipografías servidas desde `assets/` del tema |
+| Panel Tweaks | Quitado: era herramienta de presentación |
+
+Para reconstruir el zip después de editar el tema: `./build-theme.sh`
 
 ### El mayoreo, en serio
 
-El switch del demo es front-end. En producción los precios se sirven por **lista de precios
-según el cliente**, no con JavaScript. Tres caminos, de mayor a menor costo:
+El switch del tema cambia lo que se *muestra*. El precio que se *cobra* lo decide
+Shopify. Tres caminos, de mayor a menor costo:
 
-1. **Shopify Plus** — B2B nativo: cuentas de empresa, catálogos y listas de precio por cliente.
-   Es la opción correcta si el volumen lo justifica.
-2. **Shopify Basic / Grow / Advanced + app** — SparkLayer, Wholesale Gorilla o B2B Handsontrade.
-   Funcionan con etiquetas de cliente (`mayorista`) y mínimos de compra.
-3. **Sin app** — catálogo mayorista en una página protegida con contraseña y cierre por
-   pedido borrador (draft order). Barato, pero el cliente no compra solo.
+1. **Shopify Plus** — B2B nativo: cuentas de empresa, catálogos y listas de precio
+   por cliente. Es la opción correcta si el volumen lo justifica.
+2. **Basic / Grow / Advanced + app** — SparkLayer, Wholesale Gorilla o
+   B2B Handsontrade. Funcionan con etiquetas de cliente y mínimos de compra.
+3. **Sin app** — catálogo mayorista en una página protegida con contraseña y
+   cierre por pedido borrador. Barato, pero el cliente no compra solo.
 
-El formulario de "abrir cuenta de mayorista" se conecta a un registro de cliente que se
-aprueba a mano y se etiqueta. Hasta que no tenga la etiqueta, ve precios de menudeo.
-
-### Tipografías
-
-`Archivo` y `Martian Mono` no están en el selector de fuentes de Shopify. Dos opciones:
-
-- dejar el `<link>` de Google Fonts en `theme.liquid` (lo que hace este demo), o
-- subir los `.woff2` a `assets/` y declararlos con `@font-face` (mejor para velocidad y privacidad).
-
-### Lo que es CSS puro y se migra sin tocar
-
-Grano de impresión, rayas de peligro de la banda de mayoreo, marquesinas, offsets duros
-de serigrafía en los botones, mosaicos de marcador. Nada depende de librerías externas.
-
----
+El formulario de "abrir cuenta de mayorista" llega al correo de la tienda. Se
+aprueba a mano y se etiqueta al cliente como `mayorista`.
 
 ## Panel Tweaks
 
@@ -95,7 +86,7 @@ Botón redondo abajo a la derecha. Sirve para discutir variantes en vivo durante
 carril, tema (asfalto / papel), acento de menudeo, ancho de la tipografía de display,
 columnas del catálogo, etiquetas de marcador, grano y movimiento.
 
-No forma parte de la tienda. Se borra antes de publicar.
+Sólo existe en el demo HTML. El tema de Shopify no lo incluye.
 
 ---
 

@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "hero":       { "type": "hero" },
+    "brands":     { "type": "brand-strip" },
+    "categories": { "type": "category-grid" },
+    "catalog":    { "type": "catalog" },
+    "wholesale":  { "type": "wholesale" },
+    "lookbook":   { "type": "lookbook" },
+    "services":   { "type": "services" },
+    "social":     { "type": "social-grid" },
+    "faq":        { "type": "faq" },
+    "newsletter": { "type": "newsletter" }
+  },
+  "order": [
+    "hero", "brands", "categories", "catalog", "wholesale",
+    "lookbook", "services", "social", "faq", "newsletter"
+  ]
+}

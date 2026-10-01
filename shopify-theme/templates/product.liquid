@@ -1,0 +1,63 @@
+<div class="wrap page">
+  <div class="prod">
+    <div>
+      {%- render 'slate', image: product.featured_image, ratio: '4/5', num: '01', label: 'Foto producto · 4:5', alt: product.title, loading: 'eager' -%}
+    </div>
+    <div class="stack">
+      <span class="mono eyebrow">{{ product.vendor }}</span>
+      <h1 class="disp" style="font-size:var(--t-lg);margin:0">{{ product.title }}</h1>
+
+      {%- liquid
+        assign factor = 100 | minus: settings.descuento_mayoreo
+        assign mf = product.metafields.custom.precio_mayoreo
+        if mf != blank
+          assign precio_may = mf.value | times: 100 | round
+        else
+          assign precio_may = product.price | times: factor | divided_by: 100
+        endif
+      -%}
+
+      <div class="price" style="border:0;padding:0">
+        <div class="p-retail">
+          <span class="prod-price">{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <span class="p-was" style="margin-left:8px">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+        <div class="p-whole">
+          <span class="prod-price">{{ precio_may | money }}</span>
+          <span class="p-unit">/ par</span>
+          <span class="mono p-note">Mínimo {{ settings.moq }} pares</span>
+        </div>
+      </div>
+
+      {%- form 'product', product -%}
+        <div class="stack">
+          {%- if product.variants.size > 1 -%}
+            <label class="mono" for="variante">Talla</label>
+            <select class="select" id="variante" name="id">
+              {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                  {{ variant.title }}{% unless variant.available %} — agotada{% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- else -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {%- endif -%}
+
+          <label class="mono" for="cantidad">Cantidad</label>
+          <input class="qty" id="cantidad" name="quantity" type="number" min="1" value="1" inputmode="numeric">
+
+          <button class="btn btn-block" type="submit" {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}Agregar al carrito{% else %}Agotado{% endif %}
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- if product.description != blank -%}
+        <div class="rte">{{ product.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

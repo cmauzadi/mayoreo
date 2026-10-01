@@ -1,0 +1,26 @@
+<div class="wrap page">
+  <span class="mono eyebrow">Colección</span>
+  <h1 class="disp">{{ collection.title }}</h1>
+  {%- if collection.description != blank -%}
+    <div class="rte" style="max-width:62ch;margin-bottom:32px">{{ collection.description }}</div>
+  {%- endif -%}
+
+  {%- paginate collection.products by 24 -%}
+    {%- if collection.products.size > 0 -%}
+      <div class="grid" style="--cols:4">
+        {%- for product in collection.products -%}
+          {%- render 'product-card', product: product, forloop: forloop -%}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="mono" style="display:flex;gap:16px;justify-content:center;margin-top:48px" aria-label="Paginación">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Anterior</a>{%- endif -%}
+          <span class="faint">Página {{ paginate.current_page }} de {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Siguiente &rarr;</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p class="dim">Todavía no hay productos en esta colección.</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>

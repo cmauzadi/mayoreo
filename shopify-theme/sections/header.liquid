@@ -1,0 +1,97 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+-%}
+
+<header class="header">
+  <div class="wrap header-in">
+    <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}, inicio">
+      {%- if settings.logo != blank -%}
+        <img class="logo-img" src="{{ settings.logo | image_url: width: 400 }}"
+             alt="{{ shop.name | escape }}" width="{{ settings.logo_ancho }}" height="44" loading="eager"
+             style="max-width:{{ settings.logo_ancho }}px;height:auto">
+      {%- else -%}
+        <span class="logo-mark" aria-hidden="true">{{ shop.name | slice: 0, 2 | upcase }}</span>
+        <span class="logo-type">
+          <span class="logo-word">{{ shop.name }}</span>
+          {%- if settings.tagline != blank -%}
+            <span class="logo-sub">{{ settings.tagline }}</span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </a>
+
+    {%- if menu.links.size > 0 -%}
+      <nav class="nav" aria-label="Principal">
+        {%- for link in menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    <div class="header-tools">
+      {%- if section.settings.mostrar_carril -%}
+        <div class="lane lane-hdr" role="group" aria-label="Carril de compra">
+          <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo</button>
+          <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo</button>
+        </div>
+      {%- endif -%}
+
+      <a class="icon-btn" href="{{ routes.search_url }}" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </a>
+      <a class="icon-btn" href="{{ routes.account_url }}" aria-label="Mi cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.8 3.9-5.6 7.5-5.6S18.6 16.2 19.5 20"/></svg>
+      </a>
+      <a class="icon-btn" id="cartBtn" href="{{ routes.cart_url }}" aria-label="Carrito, {{ cart.item_count }} artículos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8z"/><path d="M9 7V5.6A3 3 0 0 1 12 3a3 3 0 0 1 3 2.6V7"/></svg>
+        <span class="cart-count" id="cartCount" {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+      <button class="icon-btn burger" type="button" id="burger" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="header-in" style="min-height:auto;padding:0">
+    <span class="logo" style="margin-right:auto">
+      {%- if settings.logo != blank -%}
+        <img class="logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="" width="{{ settings.logo_ancho }}" height="44" style="max-width:{{ settings.logo_ancho }}px;height:auto">
+      {%- else -%}
+        <span class="logo-mark" aria-hidden="true">{{ shop.name | slice: 0, 2 | upcase }}</span>
+        <span class="logo-type"><span class="logo-word">{{ shop.name }}</span><span class="logo-sub">{{ settings.tagline }}</span></span>
+      {%- endif -%}
+    </span>
+    <button class="icon-btn" type="button" id="closeMenu" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Principal móvil">
+    {%- for link in menu.links -%}
+      <a href="{{ link.url }}" data-close>{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
+  {%- if section.settings.mostrar_carril -%}
+    <div class="lane lane-lg" role="group" aria-label="Carril de compra" style="margin-top:32px;align-self:flex-start">
+      <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo</button>
+      <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo</button>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Encabezado",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menú", "default": "main-menu" },
+    {
+      "type": "checkbox",
+      "id": "mostrar_carril",
+      "label": "Mostrar switch Menudeo / Mayoreo",
+      "default": true,
+      "info": "Cambia el color y los precios mostrados en toda la tienda."
+    }
+  ]
+}
+{% endschema %}

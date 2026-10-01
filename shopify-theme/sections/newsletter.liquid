@@ -1,0 +1,40 @@
+<section class="news">
+  <div class="wrap news-in">
+    <div>
+      <h2 class="disp">{{ section.settings.titulo }}</h2>
+      {%- if section.settings.texto != blank -%}<p>{{ section.settings.texto }}</p>{%- endif -%}
+    </div>
+    <div>
+      {%- form 'customer', id: 'newsForm' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="mono" style="margin:0">Listo. Te avisamos antes de cada drop.</p>
+        {%- else -%}
+          <div class="news-form">
+            <label class="mono" for="news-mail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Correo electrónico</label>
+            <input id="news-mail" name="contact[email]" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+            <button class="btn" type="submit">{{ section.settings.boton }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="mono news-note" role="alert">Ese correo no se ve bien. Revísalo e intenta de nuevo.</p>
+          {%- elsif section.settings.nota != blank -%}
+            <p class="mono news-note">{{ section.settings.nota }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Boletín",
+  "settings": [
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Entérate antes que la fila" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Avisos de drops, restock de tallas agotadas y precios de mayorista directo a tu correo." },
+    { "type": "text", "id": "boton", "label": "Botón", "default": "Suscribirme" },
+    { "type": "text", "id": "nota", "label": "Nota", "default": "Un correo por semana. Te puedes dar de baja cuando quieras." }
+  ],
+  "presets": [{ "name": "Boletín" }]
+}
+{% endschema %}

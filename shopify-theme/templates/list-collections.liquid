@@ -1,0 +1,12 @@
+<div class="wrap page">
+  <span class="mono eyebrow">Catálogo</span>
+  <h1 class="disp">Todas las categorías</h1>
+  <div class="cats" style="margin-top:32px">
+    {%- for collection in collections -%}
+      <a class="cat" href="{{ collection.url }}">
+        {%- render 'slate', image: collection.featured_image, ratio: '4/3', num: forloop.index, label: 'Foto categoría' -%}
+        <span class="cat-label"><b>{{ collection.title }}</b><span class="cat-arrow mono">Ver &rarr;</span></span>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>

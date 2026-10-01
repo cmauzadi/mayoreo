@@ -1,0 +1,63 @@
+{%- comment -%}
+  Tarjetas de ejemplo: se muestran sólo mientras no haya una colección elegida,
+  para que la portada no se vea vacía en el personalizador.
+  Nombres, SKU y precios son inventados. No publiques la tienda así.
+{%- endcomment -%}
+{%- liquid
+  assign filas = "Retro Runner 92|Blanco / Gris hueso|retro|1899|1120|2299|nuevo;;Court Low Clásico|Negro / Blanco|casual|1349|795|0|;;Chunky Trail 4X|Arena / Olivo|running|2199|1290|0|nuevo;;Canvas Skate Hi|Negro total|skate|1099|640|1399|pocos;;Mesh Runner Lite|Azul / Volt|running|1649|965|0|;;Básquet Mid 85|Rojo / Blanco|basquet|2449|1440|2799|pocos;;Slip-On Lona|Cuadros blanco y negro|casual|949|555|0|;;Tech Runner Knit|Gris humo|retro|1799|1055|0|nuevo" | split: ';;'
+-%}
+
+{%- for fila in filas -%}
+  {%- liquid
+    assign f = fila | split: '|'
+    assign nombre = f[0]
+    assign color = f[1]
+    assign cat = f[2]
+    assign men = f[3] | times: 100
+    assign may = f[4] | times: 100
+    assign antes = f[5] | times: 100
+    assign etiqueta = f[6]
+    assign num = forloop.index | prepend: '0' | slice: -2, 2
+    assign ahorro = men | minus: may | times: 100 | divided_by: men
+    assign msi = men | divided_by: 12
+  -%}
+  <article class="card" data-cat="{{ cat }}" data-variant="">
+    <div class="card-media">
+      <div class="card-badges">
+        {%- if etiqueta == 'nuevo' -%}<span class="badge badge-hot">Nuevo</span>{%- endif -%}
+        {%- if etiqueta == 'pocos' -%}<span class="badge badge-low">Últimos pares</span>{%- endif -%}
+      </div>
+      <div class="slate" style="aspect-ratio:4 / 5">
+        <span class="slate-num" aria-hidden="true">{{ num }}</span>
+        <span class="ph-tag slate-tag">Foto producto · 4:5</span>
+      </div>
+      <button class="btn btn-sm btn-block quick" type="button" data-add="{{ nombre | escape }}" data-moq="{{ settings.moq }}">
+        <span class="p-retail">Agregar al carrito</span>
+        <span class="p-whole">Agregar {{ settings.moq }} pares</span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="card-sku mono"><span>EJEMPLO-{{ num }}</span><span>Caja 12</span></div>
+      <h3 class="card-name">{{ nombre }}</h3>
+      <p class="card-color">{{ color }}</p>
+      <div class="sizes" role="group" aria-label="Tallas de {{ nombre | escape }}">
+        {%- for t in (25..30) -%}
+          <button class="size" type="button" aria-pressed="false" aria-label="Talla {{ t }} mexicana">{{ t }}</button>
+        {%- endfor -%}
+      </div>
+      <div class="price">
+        <div class="p-retail">
+          <div class="p-row">
+            <span class="p-main">{{ men | money }}</span>
+            {%- if antes > men -%}<span class="p-was">{{ antes | money }}</span>{%- endif -%}
+          </div>
+          <span class="mono p-note">o 12 MSI de {{ msi | money }}</span>
+        </div>
+        <div class="p-whole">
+          <div class="p-row"><span class="p-main">{{ may | money }}</span><span class="p-unit">/ par</span></div>
+          <span class="mono p-note">Mínimo {{ settings.moq }} pares · <span class="p-save">ahorras {{ ahorro }}%</span></span>
+        </div>
+      </div>
+    </div>
+  </article>
+{%- endfor -%}

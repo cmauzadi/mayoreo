@@ -1,0 +1,49 @@
+<section class="section">
+  <div class="wrap">
+    <div class="look reveal">
+      <div class="look-panel" style="--look-num:'{{ section.settings.numero }}'">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<span class="mono eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+          <h3 class="disp">{{ section.settings.titulo }}</h3>
+          {%- if section.settings.texto != blank -%}<p>{{ section.settings.texto }}</p>{%- endif -%}
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          {%- if section.settings.cta1_texto != blank -%}
+            <a class="btn" href="{{ section.settings.cta1_url | default: '#' }}">{{ section.settings.cta1_texto }}</a>
+          {%- endif -%}
+          {%- if section.settings.cta2_texto != blank -%}
+            <a class="btn btn-ghost" href="{{ section.settings.cta2_url | default: '#' }}">{{ section.settings.cta2_texto }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="look-media">
+        <div class="media">{%- render 'slate', image: section.settings.imagen1, ratio: '16/9', num: '07', label: 'Foto editorial · horizontal' -%}</div>
+        <div class="media">{%- render 'slate', image: section.settings.imagen2, ratio: '16/9', num: '08', label: 'Foto detalle · horizontal' -%}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Editorial" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Drop 07 Asfalto" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Siete modelos fotografiados en banqueta, puente y estacionamiento. La sesión completa sale el viernes junto con el drop." },
+    { "type": "text", "id": "numero", "label": "Número de fondo", "default": "07" },
+    { "type": "image_picker", "id": "imagen1", "label": "Imagen principal" },
+    { "type": "image_picker", "id": "imagen2", "label": "Imagen de detalle" },
+    { "type": "text", "id": "cta1_texto", "label": "Botón principal", "default": "Ver el lookbook" },
+    { "type": "url", "id": "cta1_url", "label": "Enlace" },
+    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Comprar el drop" },
+    { "type": "url", "id": "cta2_url", "label": "Enlace" }
+  ],
+  "presets": [{ "name": "Lookbook" }]
+}
+{% endschema %}
+{% stylesheet %}
+.look-panel::after { content: var(--look-num, '07'); }
+.look-media .media { height: 100%; }
+.look-media .media .slate, .look-media .media .slate-img { height: 100%; min-height: 180px; aspect-ratio: auto; object-fit: cover; }
+{% endstylesheet %}

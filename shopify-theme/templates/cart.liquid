@@ -1,0 +1,45 @@
+<div class="wrap page">
+  <span class="mono eyebrow">Tu pedido</span>
+  <h1 class="disp">Carrito</h1>
+
+  {%- if cart.item_count > 0 -%}
+    {%- form 'cart', cart -%}
+      <div>
+        {%- for item in cart.items -%}
+          <div class="line">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 180 }}" alt="{{ item.title | escape }}" width="88" height="110" loading="lazy" style="object-fit:cover">
+            {%- else -%}
+              <div class="slate" style="aspect-ratio:4 / 5"></div>
+            {%- endif -%}
+            <div>
+              <a class="line-title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <div class="mono faint">{{ item.variant.title }}</div>
+              {%- endunless -%}
+              <div class="mono faint">{{ item.final_price | money }} c/u</div>
+              <label class="mono faint" for="qty-{{ item.index }}" style="display:block;margin-top:8px">Cantidad</label>
+              <input class="qty" id="qty-{{ item.index }}" name="updates[]" type="number" min="0" value="{{ item.quantity }}" inputmode="numeric">
+            </div>
+            <div class="mono" style="font-variant-numeric:tabular-nums">{{ item.final_line_price | money }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="panel" style="margin-top:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+        <div>
+          <span class="mono faint">Subtotal</span>
+          <div class="prod-price">{{ cart.total_price | money }}</div>
+          <span class="mono faint">Envío e impuestos se calculan al pagar.</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-ghost" type="submit" name="update">Actualizar</button>
+          <button class="btn" type="submit" name="checkout">Pagar</button>
+        </div>
+      </div>
+    {%- endform -%}
+  {%- else -%}
+    <p class="dim">Tu carrito está vacío.</p>
+    <a class="btn" href="{{ routes.all_products_collection_url }}">Ver el catálogo</a>
+  {%- endif -%}
+</div>

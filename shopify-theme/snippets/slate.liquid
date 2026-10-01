@@ -1,0 +1,21 @@
+{%- comment -%}
+  Muestra la imagen si el comerciante la cargó; si no, un marcador de posición
+  diseñado que indica qué foto va ahí y en qué proporción.
+  Uso: {% render 'slate', image: ..., ratio: '4/5', num: '01', label: '...', alt: '...' %}
+{%- endcomment -%}
+{%- if image != blank -%}
+  <img class="slate-img"
+       src="{{ image | image_url: width: 1000 }}"
+       srcset="{{ image | image_url: width: 500 }} 500w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: 1600 }} 1600w"
+       sizes="(max-width: 720px) 100vw, 50vw"
+       alt="{{ alt | default: '' | escape }}"
+       width="{{ image.width }}" height="{{ image.height }}"
+       loading="{{ loading | default: 'lazy' }}"
+       style="aspect-ratio:{{ ratio | default: '4/5' | replace: '/', ' / ' }}">
+{%- else -%}
+  <div class="slate" style="aspect-ratio:{{ ratio | default: '4/5' | replace: '/', ' / ' }}">
+    <span class="slate-num" aria-hidden="true">{{ num | default: '00' }}</span>
+    <span class="slate-tick" aria-hidden="true"></span>
+    <span class="ph-tag slate-tag">{{ label | default: 'Falta la foto' }}</span>
+  </div>
+{%- endif -%}

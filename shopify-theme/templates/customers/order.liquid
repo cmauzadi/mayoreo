@@ -1,0 +1,18 @@
+<div class="wrap page">
+  <span class="mono eyebrow">{{ order.created_at | date: '%d.%m.%Y' }}</span>
+  <h1 class="disp">Pedido {{ order.name }}</h1>
+  <p class="mono faint">{{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+  {%- for line in order.line_items -%}
+    <div class="line" style="grid-template-columns:1fr auto">
+      <div>
+        <span class="line-title">{{ line.title }}</span>
+        <div class="mono faint">Cantidad {{ line.quantity }}</div>
+      </div>
+      <div class="mono">{{ line.final_line_price | money }}</div>
+    </div>
+  {%- endfor -%}
+  <div class="panel" style="margin-top:32px">
+    <div class="mono faint">Total</div>
+    <div class="prod-price">{{ order.total_price | money }}</div>
+  </div>
+</div>

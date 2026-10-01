@@ -1,0 +1,51 @@
+{%- if section.blocks.size > 0 -%}
+  <section class="brands" aria-label="{{ section.settings.titulo | escape }}">
+    <div class="wrap brands-in">
+      {%- if section.settings.titulo != blank -%}
+        <span class="mono brands-label">{{ section.settings.titulo }}</span>
+      {%- endif -%}
+      <div class="brands-strip">
+        <div class="brands-track">
+          <div class="brands-group" data-marquee-group>
+            {%- for block in section.blocks -%}
+              {%- if block.settings.logo != blank -%}
+                <img class="brand-box" src="{{ block.settings.logo | image_url: width: 300 }}"
+                     alt="{{ block.settings.nombre | escape }}" loading="lazy"
+                     width="138" height="46" style="object-fit:contain;padding:8px;border-style:solid" {{ block.shopify_attributes }}>
+              {%- else -%}
+                <span class="brand-box" {{ block.shopify_attributes }}>{{ block.settings.nombre | default: 'Logo marca' }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Franja de marcas",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Marcas en catálogo" }
+  ],
+  "blocks": [
+    {
+      "type": "marca",
+      "name": "Marca",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "SVG o PNG monocromo." },
+        { "type": "text", "id": "nombre", "label": "Nombre", "default": "Logo marca" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Franja de marcas" }],
+  "default": {
+    "blocks": [
+      { "type": "marca" }, { "type": "marca" }, { "type": "marca" }, { "type": "marca" },
+      { "type": "marca" }, { "type": "marca" }, { "type": "marca" }, { "type": "marca" }
+    ]
+  }
+}
+{% endschema %}
