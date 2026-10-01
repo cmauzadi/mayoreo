@@ -1,0 +1,1695 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calle 23 Sneakers</title>
+<meta name="description" content="Demo de landing para tienda de tenis urbanos: mayoreo y menudeo en la misma página.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Martian+Mono:wdth,wght@75..112.5,400..700&display=swap">
+<style>
+/* ============================================================
+   CALLE 23 — sistema de diseño
+   Concepto de layout: rejilla de cartel callejero. Bandas a sangre
+   completa separadas por filetes de 1px; el catálogo vive en una
+   retícula densa tipo hoja de contactos; la banda de mayoreo invierte
+   el color para leerse como señalética de almacén.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+
+  /* superficie */
+  --bg:#09090A;
+  --surface:#0F0F11;
+  --surface-2:#161619;
+  --surface-3:#1E1E22;
+  --line:#2B2B31;
+  --line-soft:#1B1B20;
+
+  /* texto */
+  --fg:#EDE9E1;
+  --fg-dim:#9A958B;
+  --fg-faint:#6B665E;
+
+  /* acentos: naranja = menudeo, lima = mayoreo */
+  --orange:#FF4D17;
+  --lime:#C8FF2E;
+  --accent:var(--orange);
+  --accent-ink:#0B0B0C;
+
+  /* banda invertida: igual en ambos temas, es señalética */
+  --band-bg:#0B0B0C;
+  --band-fg:#EDE9E1;
+  --band-line:#2B2B31;
+
+  /* tipografía */
+  --ff-disp:'Archivo','Archivo Black','Helvetica Neue',Arial,sans-serif;
+  --ff-body:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --ff-mono:'Martian Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --disp-wdth:112;
+
+  --t-mega:clamp(3.4rem,13vw,11rem);
+  --t-hero:clamp(2.7rem,8.6vw,7.2rem);
+  --t-xl:clamp(2rem,5.2vw,4.1rem);
+  --t-lg:clamp(1.45rem,3vw,2.3rem);
+  --t-md:1.0625rem;
+  --t-sm:.875rem;
+  --t-xs:.75rem;
+  --t-2xs:.6875rem;
+
+  /* espaciado */
+  --s1:4px;  --s2:8px;  --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+  --gutter:20px;
+  --maxw:1360px;
+
+  /* forma y movimiento */
+  --r:2px;
+  --pill:999px;
+  --ease:cubic-bezier(.2,.9,.12,1);
+  --dur:220ms;
+  --grain-op:.055;
+}
+
+/* tema claro: papel periódico. Se activa solo desde Tweaks. */
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#EFEBE3;
+  --surface:#E8E3D9;
+  --surface-2:#E0DACE;
+  --surface-3:#D6CFC1;
+  --line:#C9C1B1;
+  --line-soft:#DCD5C7;
+  --fg:#111113;
+  --fg-dim:#56524B;
+  --fg-faint:#7E786E;
+  --grain-op:.07;
+}
+
+/* carril mayoreo: el acento cambia a lima alta visibilidad */
+:root[data-lane="mayoreo"]{ --accent:var(--lime); --accent-ink:#0B0B0C; }
+
+/* ocultar etiquetas de marcador para presentar limpio */
+:root[data-ph="off"] .ph-tag{ display:none; }
+:root[data-motion="off"] *{ animation:none!important; transition:none!important; }
+:root[data-grain="off"] .grain{ display:none; }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--ff-body); font-size:var(--t-md); line-height:1.55;
+  font-variation-settings:'wdth' 100,'wght' 420;
+  -webkit-font-smoothing:antialiased; text-wrap:pretty;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+[hidden]{ display:none!important; }
+a{ color:inherit; text-decoration:none; }
+button,input,select,textarea{ font:inherit; color:inherit; }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+::selection{ background:var(--accent); color:var(--accent-ink); }
+
+/* ---------- utilidades ---------- */
+.wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--gutter); }
+.disp{
+  font-family:var(--ff-disp); font-weight:900;
+  font-variation-settings:'wdth' var(--disp-wdth),'wght' 880;
+  line-height:.86; letter-spacing:-.025em; text-transform:uppercase;
+  text-wrap:balance; margin:0;
+}
+.mono{
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 500;
+  text-transform:uppercase; letter-spacing:.11em; line-height:1.4;
+}
+.eyebrow{ color:var(--accent); display:inline-flex; align-items:center; gap:var(--s2); }
+.eyebrow::before{ content:''; width:22px; height:2px; background:currentColor; flex:none; }
+.dim{ color:var(--fg-dim); }
+.faint{ color:var(--fg-faint); }
+.section{ padding-block:clamp(56px,9vw,124px); position:relative; }
+.rule{ height:1px; background:var(--line); border:0; margin:0; }
+.ph-tag{
+  font-family:var(--ff-mono); font-size:9px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent);
+  border:1px solid currentColor; padding:2px 5px; border-radius:var(--r);
+  display:inline-block; line-height:1; white-space:nowrap;
+}
+
+/* grano de impresión */
+.grain{
+  position:fixed; inset:0; z-index:90; pointer-events:none;
+  opacity:var(--grain-op); mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- botones ---------- */
+.btn{
+  --bw:1px;
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--s2);
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 600;
+  text-transform:uppercase; letter-spacing:.12em;
+  padding:15px 26px; border-radius:var(--r); cursor:pointer;
+  border:var(--bw) solid var(--accent); background:var(--accent); color:var(--accent-ink);
+  transition:transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+             background var(--dur) var(--ease), color var(--dur) var(--ease);
+  text-align:center;
+}
+.btn:hover{ transform:translate(-3px,-3px); box-shadow:5px 5px 0 var(--fg); }
+.btn:active{ transform:translate(0,0); box-shadow:0 0 0 var(--fg); }
+.btn[disabled]{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:none; }
+.btn-ghost{ background:transparent; color:var(--fg); border-color:var(--line); }
+.btn-ghost:hover{ border-color:var(--fg); box-shadow:5px 5px 0 var(--accent); }
+.btn-sm{ padding:10px 16px; }
+.btn-block{ width:100%; }
+
+.chip{
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 500;
+  text-transform:uppercase; letter-spacing:.1em;
+  padding:7px 14px; border-radius:var(--pill);
+  border:1px solid var(--line); background:transparent; color:var(--fg-dim);
+  cursor:pointer; white-space:nowrap;
+  transition:all var(--dur) var(--ease);
+}
+.chip:hover{ color:var(--fg); border-color:var(--fg-dim); }
+.chip[aria-pressed="true"]{ background:var(--fg); color:var(--bg); border-color:var(--fg); }
+
+/* ---------- marquesina ---------- */
+.ticker{
+  background:var(--accent); color:var(--accent-ink);
+  overflow:hidden; border-bottom:1px solid var(--accent);
+  padding-block:9px; position:relative; z-index:3;
+}
+.ticker-track{ display:flex; width:max-content; animation:slide 38s linear infinite; }
+.ticker-group{ display:flex; gap:var(--s7); padding-right:var(--s7); flex:none; }
+.ticker-item{
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 600;
+  text-transform:uppercase; letter-spacing:.14em; white-space:nowrap;
+  display:flex; align-items:center; gap:var(--s3);
+}
+.ticker-item::before{ content:'◆'; font-size:7px; opacity:.6; }
+@keyframes slide{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ticker:hover .ticker-track{ animation-play-state:paused; }
+
+/* ---------- encabezado ---------- */
+.header{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.header-in{
+  display:flex; align-items:center; gap:var(--s5);
+  min-height:68px; padding-block:var(--s3);
+}
+.logo{ display:flex; align-items:center; gap:10px; flex:none; margin-right:auto; }
+.logo-mark{
+  width:36px; height:36px; flex:none; border-radius:var(--r);
+  background:var(--accent); color:var(--accent-ink);
+  display:grid; place-items:center;
+  font-family:var(--ff-disp); font-weight:900;
+  font-variation-settings:'wdth' 78,'wght' 900;
+  font-size:17px; letter-spacing:-.04em;
+  transition:transform var(--dur) var(--ease);
+}
+.logo:hover .logo-mark{ transform:rotate(-6deg); }
+.logo-type{ line-height:.9; }
+.logo-word{
+  font-family:var(--ff-disp); font-weight:900;
+  font-variation-settings:'wdth' 88,'wght' 900;
+  font-size:19px; letter-spacing:-.035em; text-transform:uppercase; display:block;
+}
+.logo-sub{ font-family:var(--ff-mono); font-size:8px; letter-spacing:.2em; color:var(--fg-faint); text-transform:uppercase; }
+
+.nav{ display:flex; align-items:center; gap:var(--s5); }
+.nav a{
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 500;
+  text-transform:uppercase; letter-spacing:.1em; color:var(--fg-dim);
+  padding-block:6px; position:relative; transition:color var(--dur) var(--ease);
+}
+.nav a::after{
+  content:''; position:absolute; left:0; right:100%; bottom:0; height:2px;
+  background:var(--accent); transition:right var(--dur) var(--ease);
+}
+.nav a:hover{ color:var(--fg); }
+.nav a:hover::after{ right:0; }
+
+.header-tools{ display:flex; align-items:center; gap:var(--s3); flex:none; }
+.icon-btn{
+  width:38px; height:38px; display:grid; place-items:center;
+  background:transparent; border:1px solid var(--line); border-radius:var(--r);
+  cursor:pointer; position:relative;
+  transition:border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.icon-btn:hover{ border-color:var(--fg); }
+.icon-btn svg{ width:17px; height:17px; }
+.cart-count{
+  position:absolute; top:-7px; right:-7px; min-width:19px; height:19px; padding:0 4px;
+  border-radius:var(--pill); background:var(--accent); color:var(--accent-ink);
+  font-family:var(--ff-mono); font-size:9px; font-weight:700;
+  display:grid; place-items:center; line-height:1;
+}
+
+/* switch de carril */
+.lane{
+  display:inline-flex; padding:3px; gap:2px; flex:none;
+  border:1px solid var(--line); border-radius:var(--pill); background:var(--surface);
+}
+.lane-btn{
+  font-family:var(--ff-mono); font-size:var(--t-2xs);
+  font-variation-settings:'wdth' 85,'wght' 600;
+  text-transform:uppercase; letter-spacing:.1em;
+  padding:8px 16px; border:0; border-radius:var(--pill); cursor:pointer;
+  background:transparent; color:var(--fg-faint);
+  transition:background var(--dur) var(--ease), color var(--dur) var(--ease);
+  white-space:nowrap;
+}
+.lane-btn:hover{ color:var(--fg); }
+.lane-btn[aria-pressed="true"]{ background:var(--accent); color:var(--accent-ink); }
+.lane-lg .lane-btn{ padding:13px 26px; font-size:var(--t-xs); }
+
+.burger{ display:none; }
+
+/* menú móvil */
+.mobile-menu{
+  position:fixed; inset:0; z-index:80; background:var(--bg);
+  display:flex; flex-direction:column; padding:var(--s5) var(--gutter);
+  padding-top:calc(var(--s5) + env(safe-area-inset-top,0px));
+  overflow-y:auto;
+}
+.mobile-menu nav{ display:flex; flex-direction:column; gap:var(--s2); margin-top:var(--s7); }
+.mobile-menu nav a{
+  font-family:var(--ff-disp); font-weight:900;
+  font-variation-settings:'wdth' 95,'wght' 880;
+  font-size:clamp(2rem,10vw,3rem); line-height:1.02; text-transform:uppercase;
+  letter-spacing:-.03em; padding-block:var(--s2);
+  border-bottom:1px solid var(--line-soft);
+}
+.mobile-menu nav a:last-child{ color:var(--accent); }
+
+/* ---------- hero ---------- */
+.hero{ position:relative; overflow:hidden; border-bottom:1px solid var(--line); }
+.hero::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(900px 480px at 78% 8%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 68%),
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 25%);
+  opacity:.9;
+}
+.hero-in{ position:relative; display:grid; grid-template-columns:1.12fr .88fr; gap:var(--s8); align-items:end; padding-block:clamp(44px,6vw,84px) clamp(32px,4vw,56px); }
+.hero-copy{ min-width:0; }
+.hero h1{ font-size:var(--t-hero); margin-block:var(--s5) 0; }
+.hero h1 .ln{ display:block; }
+.hero h1 .hl{ color:var(--accent); }
+.hero-lead{
+  max-width:48ch; margin-block:var(--s5) 0; color:var(--fg-dim);
+  font-size:clamp(1rem,1.5vw,1.2rem);
+}
+.hero-cta{ display:flex; flex-wrap:wrap; gap:var(--s3); margin-top:var(--s6); }
+.hero-lane{ margin-top:var(--s6); }
+.hero-lane-label{ display:block; margin-bottom:var(--s3); color:var(--fg-faint); }
+
+.hero-art{ position:relative; min-width:0; }
+.drop-card{
+  border:1px solid var(--line); background:var(--surface);
+  padding:var(--s5); display:flex; flex-direction:column; gap:var(--s4);
+  border-radius:var(--r);
+}
+.drop-head{ display:flex; align-items:center; justify-content:space-between; gap:var(--s3); }
+.live-dot{ display:inline-flex; align-items:center; gap:7px; color:var(--accent); }
+.live-dot i{ width:7px; height:7px; border-radius:var(--pill); background:currentColor; animation:pulse 1.9s var(--ease) infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.75)} }
+.countdown{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s2); }
+.cd-cell{ background:var(--surface-2); border:1px solid var(--line-soft); padding:var(--s3) var(--s2); text-align:center; border-radius:var(--r); }
+.cd-num{
+  font-family:var(--ff-mono); font-variation-settings:'wdth' 80,'wght' 700;
+  font-size:clamp(1.3rem,2.4vw,1.75rem); line-height:1;
+  font-variant-numeric:tabular-nums; display:block;
+}
+.cd-lab{ font-family:var(--ff-mono); font-size:8px; letter-spacing:.16em; color:var(--fg-faint); text-transform:uppercase; margin-top:5px; display:block; }
+
+.hero-stats{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  border-top:1px solid var(--line); position:relative;
+}
+.hero-stat{ padding:var(--s5) var(--s4) var(--s5) 0; border-right:1px solid var(--line); }
+.hero-stat:last-child{ border-right:0; }
+.hero-stat b{
+  display:block; font-family:var(--ff-disp);
+  font-variation-settings:'wdth' 95,'wght' 800;
+  font-size:clamp(1.05rem,1.9vw,1.5rem); text-transform:uppercase; letter-spacing:-.02em; line-height:1.1;
+}
+.hero-stat span{ display:block; margin-top:5px; }
+
+/* marcador de fotografía — hoja de contactos */
+.slate{
+  position:relative; width:100%; background:var(--surface-2);
+  border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  display:grid; place-items:center;
+  background-image:repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--fg) 4%, transparent) 8px 9px);
+}
+.slate-num{
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 70,'wght' 900;
+  font-size:clamp(3rem,9vw,6rem); line-height:1; letter-spacing:-.04em;
+  color:transparent; -webkit-text-stroke:1.5px var(--line);
+  user-select:none;
+}
+.slate-tag{ position:absolute; left:var(--s3); top:var(--s3); z-index:2; }
+.slate-tick{ position:absolute; top:var(--s3); right:var(--s3); width:12px; height:12px; border-top:1px solid var(--fg-faint); border-right:1px solid var(--fg-faint); }
+.slate-4x5{ aspect-ratio:4/5; }
+.slate-1x1{ aspect-ratio:1/1; }
+.slate-16x9{ aspect-ratio:16/9; }
+.slate-3x4{ aspect-ratio:3/4; }
+
+/* ---------- franja de marcas ---------- */
+.brands{ border-bottom:1px solid var(--line); overflow:hidden; background:var(--surface); }
+.brands-in{ display:flex; align-items:center; gap:var(--s5); padding-block:var(--s5); }
+.brands-label{ flex:none; color:var(--fg-faint); max-width:180px; }
+.brands-strip{ overflow:hidden; flex:1; min-width:0; mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); }
+.brands-track{ display:flex; width:max-content; animation:slide 30s linear infinite; }
+.brands-group{ display:flex; gap:var(--s5); padding-right:var(--s5); flex:none; }
+.brand-box{
+  flex:none; width:138px; height:46px; border:1px dashed var(--line);
+  border-radius:var(--r); display:grid; place-items:center;
+  color:var(--fg-faint); font-family:var(--ff-mono); font-size:9px;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+
+/* ---------- categorías ---------- */
+.sec-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s5); flex-wrap:wrap; margin-bottom:var(--s6); }
+.sec-head h2{ font-size:var(--t-xl); margin:0; }
+.sec-head .eyebrow{ margin-bottom:var(--s3); }
+
+.cats{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s3); }
+.cat{ position:relative; overflow:hidden; border-radius:var(--r); display:block; }
+.cat-a{ grid-column:span 2; grid-row:span 2; }
+.cat .slate{ height:100%; min-height:190px; aspect-ratio:auto; transition:transform 420ms var(--ease); }
+.cat-a .slate{ min-height:392px; }
+.cat:hover .slate{ transform:scale(1.035); }
+.cat-label{
+  position:absolute; inset:auto 0 0 0; padding:var(--s4);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s3);
+  background:linear-gradient(transparent, color-mix(in srgb, var(--bg) 92%, transparent) 62%);
+}
+.cat-label b{
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 92,'wght' 880;
+  font-size:clamp(1.1rem,2vw,1.7rem); text-transform:uppercase; letter-spacing:-.025em; line-height:1;
+}
+.cat-arrow{ color:var(--accent); transform:translateX(-6px); opacity:0; transition:all var(--dur) var(--ease); }
+.cat:hover .cat-arrow{ transform:translateX(0); opacity:1; }
+
+/* ---------- catálogo ---------- */
+.filters{ display:flex; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s6); align-items:center; }
+.filters-note{ margin-left:auto; color:var(--fg-faint); }
+
+.grid{ display:grid; grid-template-columns:repeat(var(--cols,4),minmax(0,1fr)); gap:var(--s3); }
+.card{
+  position:relative; min-width:0; border:1px solid var(--line-soft);
+  border-radius:var(--r); background:var(--surface); overflow:hidden;
+  display:flex; flex-direction:column;
+  transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.card:hover{ border-color:var(--line); transform:translateY(-3px); }
+.card-media{ position:relative; }
+.card-media .slate{ border:0; border-bottom:1px solid var(--line-soft); border-radius:0; }
+.card-badges{ position:absolute; top:var(--s3); right:var(--s3); display:flex; flex-direction:column; gap:5px; align-items:flex-end; z-index:3; }
+.badge{
+  font-family:var(--ff-mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase;
+  padding:4px 8px; border-radius:var(--r); line-height:1;
+  background:var(--fg); color:var(--bg);
+}
+.badge-hot{ background:var(--accent); color:var(--accent-ink); }
+.badge-low{ background:transparent; color:var(--fg); border:1px solid var(--fg); }
+
+.quick{
+  position:absolute; inset:auto var(--s3) var(--s3) var(--s3); z-index:2;
+  opacity:0; transform:translateY(8px);
+  transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.card:hover .quick, .card:focus-within .quick{ opacity:1; transform:translateY(0); }
+@media (hover:none){ .quick{ opacity:1; transform:none; } }
+
+.card-body{ padding:var(--s4); display:flex; flex-direction:column; gap:var(--s3); flex:1; }
+.card-sku{ display:flex; justify-content:space-between; gap:var(--s2); color:var(--fg-faint); }
+.card-name{
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 96,'wght' 760;
+  font-size:1.0625rem; line-height:1.15; letter-spacing:-.015em;
+  text-transform:uppercase; margin:0;
+}
+.card-color{ color:var(--fg-dim); font-size:var(--t-sm); margin:-6px 0 0; }
+.sizes{ display:flex; flex-wrap:wrap; gap:4px; }
+.size{
+  font-family:var(--ff-mono); font-size:10px; letter-spacing:.04em;
+  border:1px solid var(--line); border-radius:var(--r);
+  padding:4px 6px; color:var(--fg-dim); background:transparent; cursor:pointer;
+  font-variant-numeric:tabular-nums;
+  transition:all 140ms var(--ease);
+}
+.size:hover{ border-color:var(--fg); color:var(--fg); }
+.size[aria-pressed="true"]{ background:var(--fg); color:var(--bg); border-color:var(--fg); }
+.size[disabled]{ opacity:.3; cursor:not-allowed; text-decoration:line-through; }
+
+.price{ margin-top:auto; padding-top:var(--s3); border-top:1px solid var(--line-soft); }
+.p-whole{ display:none; }
+:root[data-lane="mayoreo"] .p-retail{ display:none; }
+:root[data-lane="mayoreo"] .p-whole{ display:block; }
+.p-row{ display:flex; align-items:baseline; gap:var(--s2); flex-wrap:wrap; }
+.p-main{
+  font-family:var(--ff-mono); font-variation-settings:'wdth' 80,'wght' 700;
+  font-size:1.15rem; letter-spacing:-.01em; font-variant-numeric:tabular-nums;
+}
+.p-unit{ color:var(--fg-faint); font-family:var(--ff-mono); font-size:var(--t-2xs); letter-spacing:.1em; }
+.p-was{ color:var(--fg-faint); text-decoration:line-through; font-family:var(--ff-mono); font-size:var(--t-2xs); font-variant-numeric:tabular-nums; }
+.p-note{ margin-top:5px; color:var(--fg-dim); display:block; }
+.p-save{ color:var(--accent); }
+
+/* ---------- banda de mayoreo ---------- */
+.hazard{
+  height:13px;
+  background:repeating-linear-gradient(135deg, var(--lime) 0 17px, var(--band-bg) 17px 34px);
+}
+.wholesale{ background:var(--band-bg); color:var(--band-fg); position:relative; }
+.wholesale .mono{ color:inherit; }
+.wholesale .eyebrow{ color:var(--lime); }
+.wholesale .faint{ color:#6B665E; }
+.wholesale .dim{ color:#9A958B; }
+.ws-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--s8); align-items:start; }
+.ws-head h2{ font-size:var(--t-xl); margin:var(--s3) 0 0; }
+.ws-head p{ color:#9A958B; max-width:46ch; margin-top:var(--s4); }
+
+.tiers{ display:flex; flex-direction:column; gap:var(--s2); margin-top:var(--s6); }
+.tier{
+  display:grid; grid-template-columns:auto 1fr auto; gap:var(--s4); align-items:center;
+  border:1px solid var(--band-line); border-radius:var(--r);
+  padding:var(--s4) var(--s5); background:#121215;
+  transition:border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.tier:hover{ border-color:var(--lime); background:#17171B; }
+.tier-qty{
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 82,'wght' 880;
+  font-size:clamp(1.5rem,3vw,2.2rem); line-height:1; letter-spacing:-.03em;
+  color:var(--lime); font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.tier-mid b{ display:block; font-size:var(--t-sm); font-variation-settings:'wdth' 100,'wght' 600; }
+.tier-price{ text-align:right; white-space:nowrap; }
+.tier-price b{
+  display:block; font-family:var(--ff-mono); font-variation-settings:'wdth' 80,'wght' 700;
+  font-size:1.05rem; font-variant-numeric:tabular-nums;
+}
+
+.steps{ counter-reset:step; display:flex; flex-direction:column; gap:0; margin:var(--s6) 0 0; padding:0; list-style:none; }
+.steps li{
+  counter-increment:step; display:grid; grid-template-columns:44px 1fr; gap:var(--s4);
+  padding-block:var(--s4); border-top:1px solid var(--band-line); align-items:start;
+}
+.steps li:last-child{ border-bottom:1px solid var(--band-line); }
+.steps li::before{
+  content:counter(step,decimal-leading-zero);
+  font-family:var(--ff-mono); font-variation-settings:'wdth' 80,'wght' 700;
+  font-size:var(--t-sm); color:var(--lime); line-height:1.5;
+}
+.steps b{ display:block; font-size:var(--t-sm); }
+.steps span{ color:#9A958B; font-size:var(--t-sm); }
+
+/* formulario */
+.ws-form{ border:1px solid var(--band-line); border-radius:var(--r); background:#121215; padding:clamp(20px,3vw,32px); }
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--s4); }
+.field{ display:flex; flex-direction:column; gap:7px; min-width:0; }
+.field-full{ grid-column:1/-1; }
+.field label{ color:#9A958B; }
+.field input, .field select{
+  background:#0B0B0C; border:1px solid var(--band-line); border-radius:var(--r);
+  padding:13px 14px; color:var(--band-fg); font-size:var(--t-sm); width:100%;
+  transition:border-color var(--dur) var(--ease);
+}
+.field input::placeholder{ color:#56524B; }
+.field input:hover, .field select:hover{ border-color:#45454E; }
+.field input:focus, .field select:focus{ outline:none; border-color:var(--lime); }
+.field[data-invalid="true"] input, .field[data-invalid="true"] select{ border-color:var(--orange); }
+.field-err{ color:var(--orange); display:none; }
+.field[data-invalid="true"] .field-err{ display:block; }
+.form-foot{ display:flex; flex-direction:column; gap:var(--s3); margin-top:var(--s5); }
+.form-ok{
+  border:1px solid var(--lime); border-radius:var(--r); padding:var(--s5);
+  display:flex; gap:var(--s4); align-items:flex-start;
+}
+.form-ok b{ display:block; font-size:var(--t-md); margin-bottom:5px; }
+.form-ok p{ margin:0; color:#9A958B; font-size:var(--t-sm); }
+.form-ok svg{ color:var(--lime); flex:none; }
+
+/* ---------- lookbook ---------- */
+.look{ display:grid; grid-template-columns:1.25fr 1fr; gap:var(--s3); align-items:stretch; }
+.look-panel{
+  position:relative; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); padding:clamp(24px,4vw,56px);
+  display:flex; flex-direction:column; justify-content:space-between; gap:var(--s7);
+  overflow:hidden; min-height:380px;
+}
+.look-panel::after{
+  content:'07'; position:absolute; right:-.06em; bottom:-.26em;
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 70,'wght' 900;
+  font-size:clamp(9rem,22vw,17rem); line-height:.8; letter-spacing:-.06em;
+  color:transparent; -webkit-text-stroke:1.5px var(--line); pointer-events:none;
+}
+.look-panel > *{ position:relative; z-index:1; }
+.look h3{ font-size:var(--t-xl); margin:var(--s3) 0 0; }
+.look p{ color:var(--fg-dim); max-width:38ch; margin-top:var(--s4); }
+.look-media{ display:grid; grid-template-rows:1fr 1fr; gap:var(--s3); }
+.look-media .slate{ aspect-ratio:auto; height:100%; min-height:180px; }
+
+/* ---------- servicios ---------- */
+.svcs{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid var(--line); }
+.svc{ padding:var(--s6) var(--s5) var(--s6) 0; border-right:1px solid var(--line); }
+.svc:last-child{ border-right:0; padding-right:0; }
+.svc svg{ width:26px; height:26px; color:var(--accent); stroke-width:1.4; }
+.svc b{
+  display:block; margin:var(--s4) 0 var(--s2);
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 96,'wght' 800;
+  font-size:1.0625rem; text-transform:uppercase; letter-spacing:-.015em;
+}
+.svc p{ margin:0; color:var(--fg-dim); font-size:var(--t-sm); max-width:30ch; }
+
+/* ---------- social ---------- */
+.social-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:var(--s2); }
+.social-grid .slate{ transition:opacity var(--dur) var(--ease); }
+.social-grid a:hover .slate{ opacity:.72; }
+
+/* ---------- preguntas ---------- */
+.faq{ display:grid; grid-template-columns:.8fr 1.2fr; gap:var(--s8); align-items:start; }
+.faq-list{ border-top:1px solid var(--line); }
+.faq-item{ border-bottom:1px solid var(--line); }
+.faq-q{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:var(--s4);
+  background:transparent; border:0; cursor:pointer; text-align:left;
+  padding:var(--s5) 0; color:var(--fg);
+  font-family:var(--ff-disp); font-variation-settings:'wdth' 96,'wght' 720;
+  font-size:1.0625rem; text-transform:uppercase; letter-spacing:-.01em; line-height:1.25;
+  transition:color var(--dur) var(--ease);
+}
+.faq-q:hover{ color:var(--accent); }
+.faq-ico{ flex:none; width:18px; height:18px; position:relative; }
+.faq-ico::before,.faq-ico::after{
+  content:''; position:absolute; inset:50% 0 auto 0; height:1.5px; background:currentColor;
+  transition:transform var(--dur) var(--ease);
+}
+.faq-ico::after{ transform:rotate(90deg); }
+.faq-q[aria-expanded="true"] .faq-ico::after{ transform:rotate(0deg); }
+.faq-a{ overflow:hidden; }
+.faq-a p{ margin:0; padding:0 0 var(--s5); color:var(--fg-dim); max-width:62ch; font-size:var(--t-sm); }
+
+/* ---------- boletín ---------- */
+.news{ background:var(--accent); color:var(--accent-ink); border-block:1px solid var(--accent); }
+.news-in{ display:grid; grid-template-columns:1fr 1fr; gap:var(--s8); align-items:center; padding-block:clamp(44px,6vw,80px); }
+.news h2{ font-size:var(--t-xl); margin:0; }
+.news p{ margin:var(--s4) 0 0; max-width:40ch; opacity:.78; }
+.news-form{ display:flex; gap:var(--s2); flex-wrap:wrap; }
+.news-form input{
+  flex:1; min-width:200px; background:transparent; color:var(--accent-ink);
+  border:1px solid color-mix(in srgb, var(--accent-ink) 35%, transparent);
+  border-radius:var(--r); padding:15px 16px;
+}
+.news-form input::placeholder{ color:color-mix(in srgb, var(--accent-ink) 55%, transparent); }
+.news-form input:focus{ outline:none; border-color:var(--accent-ink); }
+.news-form .btn{ background:var(--accent-ink); color:var(--accent); border-color:var(--accent-ink); }
+.news-form .btn:hover{ box-shadow:5px 5px 0 color-mix(in srgb, var(--accent-ink) 30%, transparent); }
+.news-note{ margin-top:var(--s3); opacity:.7; }
+
+/* ---------- pie ---------- */
+.footer{ background:var(--surface); border-top:1px solid var(--line); }
+.footer-top{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:var(--s7); padding-block:clamp(44px,6vw,80px); }
+.footer h4{ margin:0 0 var(--s4); color:var(--fg-faint); font-weight:inherit; }
+.footer ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--s3); }
+.footer ul a{ color:var(--fg-dim); font-size:var(--t-sm); transition:color var(--dur) var(--ease); }
+.footer ul a:hover{ color:var(--accent); }
+.pay{ display:flex; flex-wrap:wrap; gap:6px; margin-top:var(--s4); }
+.pay span{
+  font-family:var(--ff-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+  border:1px solid var(--line); border-radius:var(--r); padding:6px 9px; color:var(--fg-dim);
+}
+.footer-bot{
+  border-top:1px solid var(--line); padding-block:var(--s5);
+  display:flex; justify-content:space-between; gap:var(--s4); flex-wrap:wrap; align-items:center;
+}
+.demo-stamp{
+  border:1px solid var(--accent); color:var(--accent); border-radius:var(--r);
+  padding:7px 11px; display:inline-block;
+}
+
+/* ---------- avisos ---------- */
+.toast{
+  position:fixed; left:50%; bottom:24px; transform:translate(-50%,120%);
+  z-index:95; background:var(--fg); color:var(--bg);
+  border-radius:var(--r); padding:13px 20px;
+  display:flex; align-items:center; gap:var(--s3);
+  transition:transform 320ms var(--ease), opacity 200ms var(--ease);
+  max-width:calc(100vw - 32px);
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.toast[data-show="true"]{ transform:translate(-50%,0); opacity:1; visibility:visible; }
+
+/* ---------- panel Tweaks ---------- */
+.tweaks-btn{
+  position:fixed; right:18px; bottom:18px; z-index:98;
+  width:46px; height:46px; border-radius:var(--pill);
+  background:var(--fg); color:var(--bg); border:0; cursor:pointer;
+  display:grid; place-items:center; box-shadow:0 6px 24px rgba(0,0,0,.4);
+  transition:transform var(--dur) var(--ease);
+}
+.tweaks-btn:hover{ transform:scale(1.07) rotate(45deg); }
+.tweaks{
+  position:fixed; right:18px; bottom:18px; z-index:99;
+  width:min(300px, calc(100vw - 36px));
+  max-height:min(76vh, 620px); overflow-y:auto;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:0 18px 50px rgba(0,0,0,.5);
+}
+.tweaks-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:var(--s4) var(--s4) var(--s3); border-bottom:1px solid var(--line);
+  position:sticky; top:0; background:var(--surface); z-index:1;
+}
+.tweaks-body{ padding:var(--s4); display:flex; flex-direction:column; gap:var(--s4); }
+.tw-row{ display:flex; flex-direction:column; gap:7px; }
+.tw-row > .mono{ color:var(--fg-faint); }
+.tw-opts{ display:flex; gap:5px; flex-wrap:wrap; }
+.tw-opts .chip{ flex:1; justify-content:center; text-align:center; padding:7px 9px; font-size:10px; }
+.tweaks hr{ border:0; border-top:1px solid var(--line-soft); margin:0; }
+
+/* ---------- aparición al hacer scroll ---------- */
+.reveal{ opacity:1; }
+.js .reveal{ opacity:0; transform:translateY(18px); transition:opacity 560ms var(--ease), transform 560ms var(--ease); }
+.js .reveal.in, .js .all-visible .reveal{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  .js .reveal{ opacity:1!important; transform:none!important; }
+  .ticker-track,.brands-track{ animation:none!important; }
+}
+
+/* ---------- adaptable ---------- */
+@media (max-width:1100px){
+  .hero-in{ grid-template-columns:1fr; gap:var(--s7); align-items:start; }
+  .hero-art{ max-width:520px; }
+  .ws-grid,.faq,.news-in{ grid-template-columns:1fr; gap:var(--s7); }
+  .grid{ --cols:3; }
+  .footer-top{ grid-template-columns:1fr 1fr; gap:var(--s6); }
+  .look{ grid-template-columns:1fr; }
+  .look-media{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
+}
+@media (max-width:900px){
+  .nav{ display:none; }
+  .burger{ display:grid; }
+  .header-in{ gap:var(--s3); }
+  .lane-hdr{ display:none; }
+  .svcs{ grid-template-columns:1fr 1fr; }
+  .svc{ padding-right:var(--s5); }
+  .svc:nth-child(2n){ border-right:0; padding-right:0; }
+  .svc:nth-child(n+3){ border-top:1px solid var(--line); }
+  .social-grid{ grid-template-columns:repeat(3,1fr); }
+  .hero-stats{ grid-template-columns:1fr 1fr; }
+  .hero-stat:nth-child(2n){ border-right:0; }
+  .hero-stat:nth-child(n+3){ border-top:1px solid var(--line); }
+  .brands-label{ display:none; }
+}
+@media (max-width:720px){
+  :root{ --gutter:16px; }
+  .grid{ --cols:2; }
+  .cats{ grid-template-columns:1fr 1fr; }
+  .cat-a{ grid-column:span 2; grid-row:span 1; }
+  .cat-a .slate{ min-height:230px; }
+  .form-grid{ grid-template-columns:1fr; }
+  .tier{ grid-template-columns:auto 1fr; }
+  .tier-price{ grid-column:1/-1; text-align:left; border-top:1px solid var(--band-line); padding-top:var(--s3); }
+  .sec-head{ align-items:flex-start; }
+  .filters-note{ margin-left:0; }
+}
+@media (max-width:520px){
+  .grid{ --cols:1; }
+  .social-grid{ grid-template-columns:1fr 1fr; }
+  .footer-top{ grid-template-columns:1fr; }
+  .svcs{ grid-template-columns:1fr; }
+  .svc{ border-right:0; padding-right:0; }
+  .svc + .svc{ border-top:1px solid var(--line); }
+  .look-media{ grid-template-columns:1fr; }
+  .hero-cta .btn{ width:100%; }
+  .lane-lg{ display:flex; width:100%; }
+  .lane-lg .lane-btn{ flex:1; min-width:0; padding:13px 8px; font-size:10px; letter-spacing:.06em; }
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ======================= MARQUESINA ======================= -->
+<div class="ticker" role="region" aria-label="Avisos de la tienda">
+  <div class="ticker-track">
+    <div class="ticker-group" id="tickerGroup">
+      <span class="ticker-item">Envío gratis en compras desde $1,499</span>
+      <span class="ticker-item">Mayoreo desde 6 pares surtidos</span>
+      <span class="ticker-item">Modelos nuevos cada viernes 20:00</span>
+      <span class="ticker-item">12 meses sin intereses con tarjetas participantes</span>
+      <span class="ticker-item">Facturamos CFDI 4.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= ENCABEZADO ======================= -->
+<header class="header">
+  <div class="wrap header-in">
+    <a class="logo" href="#top" aria-label="Calle 23, inicio">
+      <span class="logo-mark" aria-hidden="true">23</span>
+      <span class="logo-type">
+        <span class="logo-word">Calle 23</span>
+        <span class="logo-sub">Mayoreo &amp; Menudeo</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Principal">
+      <a href="#catalogo">Hombre</a>
+      <a href="#catalogo">Mujer</a>
+      <a href="#catalogo">Niños</a>
+      <a href="#categorias">Marcas</a>
+      <a href="#catalogo">Rebajas</a>
+      <a href="#mayoreo">Mayoreo</a>
+    </nav>
+
+    <div class="header-tools">
+      <div class="lane lane-hdr" role="group" aria-label="Carril de compra">
+        <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo</button>
+        <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo</button>
+      </div>
+
+      <button class="icon-btn" type="button" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" type="button" aria-label="Mi cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.8 3.9-5.6 7.5-5.6S18.6 16.2 19.5 20"/></svg>
+      </button>
+      <button class="icon-btn" type="button" id="cartBtn" aria-label="Carrito, 0 artículos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8z"/><path d="M9 7V5.6A3 3 0 0 1 12 3a3 3 0 0 1 3 2.6V7"/></svg>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <button class="icon-btn burger" type="button" id="burger" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- menú móvil -->
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="header-in" style="min-height:auto;padding:0">
+    <span class="logo" style="margin-right:auto">
+      <span class="logo-mark" aria-hidden="true">23</span>
+      <span class="logo-type"><span class="logo-word">Calle 23</span><span class="logo-sub">Mayoreo &amp; Menudeo</span></span>
+    </span>
+    <button class="icon-btn" type="button" id="closeMenu" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Principal móvil">
+    <a href="#catalogo" data-close>Hombre</a>
+    <a href="#catalogo" data-close>Mujer</a>
+    <a href="#catalogo" data-close>Niños</a>
+    <a href="#categorias" data-close>Marcas</a>
+    <a href="#catalogo" data-close>Rebajas</a>
+    <a href="#mayoreo" data-close>Mayoreo</a>
+  </nav>
+  <div class="lane lane-lg" role="group" aria-label="Carril de compra" style="margin-top:32px;align-self:flex-start">
+    <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo</button>
+    <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo</button>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- ======================= PORTADA ======================= -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <span class="mono eyebrow">Tenis urbanos · Envíos a todo México</span>
+
+      <h1 class="disp">
+        <span class="ln">Pares</span>
+        <span class="ln">que se</span>
+        <span class="ln hl">venden solos</span>
+      </h1>
+
+      <p class="hero-lead">
+        Catálogo de tenis urbanos, retro y deportivos. Compra un par o surte tu tienda
+        con corrida completa: mismo almacén, dos listas de precio.
+      </p>
+
+      <div class="hero-lane">
+        <span class="mono hero-lane-label">Elige cómo quieres comprar</span>
+        <div class="lane lane-lg" role="group" aria-label="Carril de compra, portada">
+          <button class="lane-btn" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo · 1 par</button>
+          <button class="lane-btn" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo · 6+ pares</button>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a class="btn" href="#catalogo">Ver catálogo</a>
+        <a class="btn btn-ghost" href="#mayoreo">Precios de mayoreo</a>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="slate slate-4x5" style="margin-bottom:12px">
+        <span class="slate-num" aria-hidden="true">01</span>
+        <span class="slate-tick" aria-hidden="true"></span>
+        <span class="ph-tag slate-tag">Foto principal · 4:5</span>
+      </div>
+
+      <div class="drop-card">
+        <div class="drop-head">
+          <span class="mono live-dot"><i aria-hidden="true"></i> Próximo drop</span>
+          <span class="mono faint">Viernes 20:00 h</span>
+        </div>
+        <div class="countdown" id="countdown" role="timer" aria-live="off" aria-label="Cuenta regresiva al próximo lanzamiento">
+          <div class="cd-cell"><span class="cd-num" data-cd="d">00</span><span class="cd-lab">Días</span></div>
+          <div class="cd-cell"><span class="cd-num" data-cd="h">00</span><span class="cd-lab">Hrs</span></div>
+          <div class="cd-cell"><span class="cd-num" data-cd="m">00</span><span class="cd-lab">Min</span></div>
+          <div class="cd-cell"><span class="cd-num" data-cd="s">00</span><span class="cd-lab">Seg</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero-stats">
+      <div class="hero-stat"><b>24–72 h</b><span class="mono faint">Entrega zona metro</span></div>
+      <div class="hero-stat"><b>6 pares</b><span class="mono faint">Mínimo de mayoreo</span></div>
+      <div class="hero-stat"><b>25–30 MX</b><span class="mono faint">Corrida completa</span></div>
+      <div class="hero-stat"><b>30 días</b><span class="mono faint">Cambios en menudeo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= MARCAS ======================= -->
+<section class="brands" aria-label="Marcas que manejamos">
+  <div class="wrap brands-in">
+    <span class="mono brands-label">Marcas en catálogo</span>
+    <div class="brands-strip">
+      <div class="brands-track">
+        <div class="brands-group" id="brandsGroup">
+          <span class="brand-box">Logo marca 1</span>
+          <span class="brand-box">Logo marca 2</span>
+          <span class="brand-box">Logo marca 3</span>
+          <span class="brand-box">Logo marca 4</span>
+          <span class="brand-box">Logo marca 5</span>
+          <span class="brand-box">Logo marca 6</span>
+          <span class="brand-box">Logo marca 7</span>
+          <span class="brand-box">Logo marca 8</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CATEGORÍAS ======================= -->
+<section class="section" id="categorias">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="mono eyebrow">Por categoría</span>
+        <h2 class="disp">Busca por tipo de pisada</h2>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="#catalogo">Ver todo el catálogo</a>
+    </div>
+
+    <div class="cats reveal">
+      <a class="cat cat-a" href="#catalogo">
+        <div class="slate"><span class="slate-num" aria-hidden="true">02</span><span class="slate-tick" aria-hidden="true"></span><span class="ph-tag slate-tag">Foto categoría · 1:1</span></div>
+        <span class="cat-label"><b>Retro</b><span class="cat-arrow mono">Ver →</span></span>
+      </a>
+      <a class="cat" href="#catalogo">
+        <div class="slate"><span class="slate-num" aria-hidden="true">03</span><span class="ph-tag slate-tag">Foto · 4:3</span></div>
+        <span class="cat-label"><b>Running</b><span class="cat-arrow mono">Ver →</span></span>
+      </a>
+      <a class="cat" href="#catalogo">
+        <div class="slate"><span class="slate-num" aria-hidden="true">04</span><span class="ph-tag slate-tag">Foto · 4:3</span></div>
+        <span class="cat-label"><b>Skate</b><span class="cat-arrow mono">Ver →</span></span>
+      </a>
+      <a class="cat" href="#catalogo">
+        <div class="slate"><span class="slate-num" aria-hidden="true">05</span><span class="ph-tag slate-tag">Foto · 4:3</span></div>
+        <span class="cat-label"><b>Básquet</b><span class="cat-arrow mono">Ver →</span></span>
+      </a>
+      <a class="cat" href="#catalogo">
+        <div class="slate"><span class="slate-num" aria-hidden="true">06</span><span class="ph-tag slate-tag">Foto · 4:3</span></div>
+        <span class="cat-label"><b>Niños</b><span class="cat-arrow mono">Ver →</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ======================= CATÁLOGO ======================= -->
+<section class="section" id="catalogo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="mono eyebrow">Catálogo</span>
+        <h2 class="disp">Lo que más sale</h2>
+      </div>
+      <p class="mono faint" style="max-width:34ch;margin:0">
+        Los precios cambian según el carril que elijas arriba.
+      </p>
+    </div>
+
+    <div class="filters reveal" role="group" aria-label="Filtrar catálogo">
+      <button class="chip" type="button" data-filter="todos" aria-pressed="true">Todos</button>
+      <button class="chip" type="button" data-filter="retro" aria-pressed="false">Retro</button>
+      <button class="chip" type="button" data-filter="running" aria-pressed="false">Running</button>
+      <button class="chip" type="button" data-filter="skate" aria-pressed="false">Skate</button>
+      <button class="chip" type="button" data-filter="basquet" aria-pressed="false">Básquet</button>
+      <button class="chip" type="button" data-filter="casual" aria-pressed="false">Casual</button>
+      <span class="mono filters-note" id="filterCount">8 modelos</span>
+    </div>
+
+    <div class="grid reveal" id="catalogGrid"></div>
+
+    <div style="display:flex;justify-content:center;margin-top:48px">
+      <a class="btn btn-ghost" href="#catalogo">Cargar más modelos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= MAYOREO ======================= -->
+<div class="hazard" aria-hidden="true"></div>
+<section class="wholesale section" id="mayoreo">
+  <div class="wrap ws-grid">
+    <div class="ws-head reveal">
+      <span class="mono eyebrow">Mayoreo</span>
+      <h2 class="disp">Surte tu tienda</h2>
+      <p>
+        Trabajamos con tiendas de barrio, bazares, tianguis y vendedores en línea.
+        Entre más pares, mejor precio por par. Sin contrato, sin cuota de membresía.
+      </p>
+
+      <div class="tiers">
+        <div class="tier">
+          <span class="tier-qty">6–11</span>
+          <span class="tier-mid"><b>Pares surtidos</b><span class="mono faint">Modelos y tallas a tu elección</span></span>
+          <span class="tier-price"><b>$1,120 / par</b><span class="mono faint">−38% vs menudeo</span></span>
+        </div>
+        <div class="tier">
+          <span class="tier-qty">12–35</span>
+          <span class="tier-mid"><b>Caja completa</b><span class="mono faint">Corrida 25–30 MX · envío gratis</span></span>
+          <span class="tier-price"><b>$995 / par</b><span class="mono faint">−45% vs menudeo</span></span>
+        </div>
+        <div class="tier">
+          <span class="tier-qty">36+</span>
+          <span class="tier-mid"><b>Distribuidor</b><span class="mono faint">Crédito a 15 días con historial</span></span>
+          <span class="tier-price"><b>$845 / par</b><span class="mono faint">−53% vs menudeo</span></span>
+        </div>
+      </div>
+      <p class="mono faint" style="margin-top:16px">
+        <span class="ph-tag">Ejemplo</span>
+        Sustituye estos rangos y precios por tu lista real antes de publicar.
+      </p>
+
+      <ol class="steps">
+        <li><span><b>Mándanos tus datos</b><span>Nombre del negocio y WhatsApp. Respondemos el mismo día hábil.</span></span></li>
+        <li><span><b>Recibe catálogo y lista de precios</b><span>PDF con existencias reales y corridas disponibles.</span></span></li>
+        <li><span><b>Arma tu pedido</b><span>Mezcla modelos y tallas hasta llegar al mínimo de 6 pares.</span></span></li>
+        <li><span><b>Pagas y se surte</b><span>Transferencia o depósito. Sale de almacén en 24–72 h.</span></span></li>
+      </ol>
+    </div>
+
+    <div class="ws-form reveal">
+      <span class="mono eyebrow">Solicita tu lista de precios</span>
+      <h3 class="disp" style="font-size:var(--t-lg);margin:12px 0 24px">Abre tu cuenta de mayorista</h3>
+
+      <form id="wsForm" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label class="mono" for="ws-nombre">Nombre</label>
+            <input id="ws-nombre" name="nombre" type="text" placeholder="Tu nombre" autocomplete="name" required>
+            <span class="mono field-err">Escribe tu nombre.</span>
+          </div>
+          <div class="field">
+            <label class="mono" for="ws-negocio">Negocio</label>
+            <input id="ws-negocio" name="negocio" type="text" placeholder="Nombre de la tienda" autocomplete="organization" required>
+            <span class="mono field-err">Escribe el nombre del negocio.</span>
+          </div>
+          <div class="field">
+            <label class="mono" for="ws-tel">WhatsApp</label>
+            <input id="ws-tel" name="tel" type="tel" inputmode="tel" placeholder="10 dígitos" autocomplete="tel" required>
+            <span class="mono field-err">Necesitamos 10 dígitos.</span>
+          </div>
+          <div class="field">
+            <label class="mono" for="ws-estado">Estado</label>
+            <select id="ws-estado" name="estado" required>
+              <option value="">Selecciona</option>
+              <option>Ciudad de México</option>
+              <option>Estado de México</option>
+              <option>Jalisco</option>
+              <option>Nuevo León</option>
+              <option>Puebla</option>
+              <option>Guanajuato</option>
+              <option>Otro</option>
+            </select>
+            <span class="mono field-err">Elige un estado.</span>
+          </div>
+          <div class="field field-full">
+            <label class="mono" for="ws-vol">Pares que compras al mes</label>
+            <select id="ws-vol" name="volumen" required>
+              <option value="">Selecciona</option>
+              <option>6 a 11 pares</option>
+              <option>12 a 35 pares</option>
+              <option>36 a 99 pares</option>
+              <option>100 pares o más</option>
+            </select>
+            <span class="mono field-err">Elige un volumen aproximado.</span>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn btn-block" type="submit">Recibir lista de precios</button>
+          <button class="btn btn-ghost btn-block" type="button" id="waBtn">Escribir por WhatsApp</button>
+          <span class="mono faint">
+            Demo: el formulario no envía nada. En Shopify esto se conecta a una cuenta de cliente con etiqueta <em>mayorista</em>.
+          </span>
+        </div>
+      </form>
+
+      <div class="form-ok" id="wsOk" hidden>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.6 2.6L16 9.6"/></svg>
+        <div>
+          <b>Solicitud registrada</b>
+          <p id="wsOkMsg">Te mandamos el catálogo y la lista de precios por WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hazard" aria-hidden="true"></div>
+
+<!-- ======================= LOOKBOOK ======================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="look reveal">
+      <div class="look-panel">
+        <div>
+          <span class="mono eyebrow">Editorial</span>
+          <h3 class="disp">Drop 07<br>Asfalto</h3>
+          <p>Siete modelos fotografiados en banqueta, puente y estacionamiento. La sesión completa sale el viernes junto con el drop.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn" href="#catalogo">Ver el lookbook</a>
+          <a class="btn btn-ghost" href="#catalogo">Comprar el drop</a>
+        </div>
+      </div>
+      <div class="look-media">
+        <div class="slate"><span class="slate-num" aria-hidden="true">07</span><span class="slate-tick" aria-hidden="true"></span><span class="ph-tag slate-tag">Foto editorial · horizontal</span></div>
+        <div class="slate"><span class="slate-num" aria-hidden="true">08</span><span class="ph-tag slate-tag">Foto detalle · horizontal</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SERVICIOS ======================= -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="svcs reveal">
+      <div class="svc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M2 7.5h11v9H2zM13 10h4.4l3.6 3.4v3.1h-8z"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>
+        <b>Envío a todo México</b>
+        <p>24 a 72 horas en zonas metropolitanas. Gratis desde $1,499 en menudeo y desde 12 pares en mayoreo.</p>
+      </div>
+      <div class="svc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 8.2 12 3.5l9 4.7v7.6L12 20.5 3 15.8z"/><path d="M3 8.2 12 13l9-4.8M12 13v7.5"/></svg>
+        <b>Corrida completa</b>
+        <p>Caja de 12 pares con tallas 25 a 30 MX. También armamos surtidos según lo que más te rote.</p>
+      </div>
+      <div class="svc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3.2l7.2 2.6v5.4c0 4.3-3 7.6-7.2 9.1-4.2-1.5-7.2-4.8-7.2-9.1V5.8z"/><path d="M9.2 12.1l2 2 3.6-3.9"/></svg>
+        <b>Cambios sin pelear</b>
+        <p>30 días para cambiar talla en menudeo. En mayoreo reponemos cualquier par con defecto de fábrica.</p>
+      </div>
+      <div class="svc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z"/><path d="M3.5 10h17M7 14h3.5"/></svg>
+        <b>Pagas como quieras</b>
+        <p>Tarjeta, 12 MSI, OXXO, transferencia SPEI y Mercado Pago. Facturamos CFDI 4.0 el mismo día.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SOCIAL ======================= -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="mono eyebrow">@calle23mx</span>
+        <h2 class="disp">En la calle</h2>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="#top">Seguir en Instagram</a>
+    </div>
+    <div class="social-grid reveal">
+      <a href="#top" aria-label="Publicación 1"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">09</span><span class="ph-tag slate-tag">1:1</span></div></a>
+      <a href="#top" aria-label="Publicación 2"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">10</span><span class="ph-tag slate-tag">1:1</span></div></a>
+      <a href="#top" aria-label="Publicación 3"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">11</span><span class="ph-tag slate-tag">1:1</span></div></a>
+      <a href="#top" aria-label="Publicación 4"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">12</span><span class="ph-tag slate-tag">1:1</span></div></a>
+      <a href="#top" aria-label="Publicación 5"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">13</span><span class="ph-tag slate-tag">1:1</span></div></a>
+      <a href="#top" aria-label="Publicación 6"><div class="slate slate-1x1"><span class="slate-num" aria-hidden="true">14</span><span class="ph-tag slate-tag">1:1</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PREGUNTAS ======================= -->
+<section class="section" id="ayuda" style="padding-top:0">
+  <div class="wrap faq">
+    <div class="reveal">
+      <span class="mono eyebrow">Ayuda</span>
+      <h2 class="disp" style="font-size:var(--t-xl);margin:12px 0 0">Preguntas<br>frecuentes</h2>
+      <p class="dim" style="margin-top:20px;font-size:var(--t-sm)">
+        ¿No encuentras tu respuesta? Escríbenos por WhatsApp de lunes a sábado, 9:00 a 19:00 h.
+      </p>
+      <p class="mono faint" style="margin-top:16px"><span class="ph-tag">Editable</span> Ajusta estas políticas a las reales de la tienda.</p>
+    </div>
+
+    <div class="faq-list reveal" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ======================= BOLETÍN ======================= -->
+<section class="news">
+  <div class="wrap news-in">
+    <div>
+      <h2 class="disp">Entérate antes<br>que la fila</h2>
+      <p>Avisos de drops, restock de tallas agotadas y precios de mayorista directo a tu correo.</p>
+    </div>
+    <div>
+      <form class="news-form" id="newsForm" novalidate>
+        <label class="mono" for="news-mail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Correo electrónico</label>
+        <input id="news-mail" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+        <button class="btn" type="submit">Suscribirme</button>
+      </form>
+      <p class="mono news-note" id="newsNote">Un correo por semana. Te puedes dar de baja cuando quieras.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PIE ======================= -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <span class="logo" style="margin:0 0 16px">
+          <span class="logo-mark" aria-hidden="true">23</span>
+          <span class="logo-type"><span class="logo-word">Calle 23</span><span class="logo-sub">Mayoreo &amp; Menudeo</span></span>
+        </span>
+        <p class="dim" style="font-size:var(--t-sm);max-width:34ch;margin:0">
+          Tenis urbanos, retro y deportivos. Almacén en CDMX, envíos a toda la República.
+        </p>
+        <div class="pay" aria-label="Formas de pago">
+          <span>Visa</span><span>Mastercard</span><span>AMEX</span>
+          <span>OXXO</span><span>SPEI</span><span>Mercado Pago</span><span>12 MSI</span>
+        </div>
+        <p class="mono faint" style="margin-top:12px"><span class="ph-tag">Pendiente</span> Reemplazar por los íconos oficiales de cada método.</p>
+      </div>
+
+      <div>
+        <h4 class="mono">Comprar</h4>
+        <ul>
+          <li><a href="#catalogo">Hombre</a></li>
+          <li><a href="#catalogo">Mujer</a></li>
+          <li><a href="#catalogo">Niños</a></li>
+          <li><a href="#catalogo">Rebajas</a></li>
+          <li><a href="#categorias">Marcas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="mono">Mayoreo</h4>
+        <ul>
+          <li><a href="#mayoreo">Lista de precios</a></li>
+          <li><a href="#mayoreo">Cómo funciona</a></li>
+          <li><a href="#mayoreo">Abrir cuenta</a></li>
+          <li><a href="#mayoreo">Catálogo PDF</a></li>
+          <li><a href="#mayoreo">Facturación</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="mono">Ayuda</h4>
+        <ul>
+          <li><a href="#ayuda">Envíos y entregas</a></li>
+          <li><a href="#ayuda">Cambios y devoluciones</a></li>
+          <li><a href="#ayuda">Guía de tallas</a></li>
+          <li><a href="#ayuda">Rastrear pedido</a></li>
+          <li><a href="#ayuda">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bot">
+      <span class="mono faint">© 2026 Calle 23 · Aviso de privacidad · Términos y condiciones</span>
+      <span class="mono demo-stamp">Demo de diseño — marca, precios y fotos son marcadores</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- ======================= AVISO ======================= -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="mono" id="toastText"></span>
+</div>
+
+<!-- ======================= TWEAKS ======================= -->
+<button class="tweaks-btn" type="button" id="tweaksOpen" aria-label="Abrir panel de ajustes">
+  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+    <path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/>
+  </svg>
+</button>
+
+<aside class="tweaks" id="tweaks" aria-label="Ajustes de diseño" hidden>
+  <div class="tweaks-head">
+    <span class="mono">Tweaks</span>
+    <button class="icon-btn" type="button" id="tweaksClose" aria-label="Cerrar ajustes" style="width:30px;height:30px">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tw-row">
+      <span class="mono">Carril</span>
+      <div class="tw-opts">
+        <button class="chip" type="button" data-lane-btn="menudeo" aria-pressed="true">Menudeo</button>
+        <button class="chip" type="button" data-lane-btn="mayoreo" aria-pressed="false">Mayoreo</button>
+      </div>
+    </div>
+    <hr>
+    <div class="tw-row">
+      <span class="mono">Tema</span>
+      <div class="tw-opts" data-tw="theme">
+        <button class="chip" type="button" data-val="dark" aria-pressed="true">Asfalto</button>
+        <button class="chip" type="button" data-val="light" aria-pressed="false">Papel</button>
+      </div>
+    </div>
+    <div class="tw-row">
+      <span class="mono">Acento de menudeo</span>
+      <div class="tw-opts" data-tw="accent">
+        <button class="chip" type="button" data-val="#FF4D17" aria-pressed="true">Naranja</button>
+        <button class="chip" type="button" data-val="#E5322B" aria-pressed="false">Rojo</button>
+        <button class="chip" type="button" data-val="#2EC4FF" aria-pressed="false">Azul</button>
+      </div>
+    </div>
+    <div class="tw-row">
+      <span class="mono">Display</span>
+      <div class="tw-opts" data-tw="wdth">
+        <button class="chip" type="button" data-val="78" aria-pressed="false">Condensada</button>
+        <button class="chip" type="button" data-val="112" aria-pressed="true">Normal</button>
+        <button class="chip" type="button" data-val="125" aria-pressed="false">Ancha</button>
+      </div>
+    </div>
+    <hr>
+    <div class="tw-row">
+      <span class="mono">Columnas del catálogo</span>
+      <div class="tw-opts" data-tw="cols">
+        <button class="chip" type="button" data-val="3" aria-pressed="false">3</button>
+        <button class="chip" type="button" data-val="4" aria-pressed="true">4</button>
+        <button class="chip" type="button" data-val="5" aria-pressed="false">5</button>
+      </div>
+    </div>
+    <div class="tw-row">
+      <span class="mono">Etiquetas de marcador</span>
+      <div class="tw-opts" data-tw="ph">
+        <button class="chip" type="button" data-val="on" aria-pressed="true">Mostrar</button>
+        <button class="chip" type="button" data-val="off" aria-pressed="false">Ocultar</button>
+      </div>
+    </div>
+    <hr>
+    <div class="tw-row">
+      <span class="mono">Grano de impresión</span>
+      <div class="tw-opts" data-tw="grain">
+        <button class="chip" type="button" data-val="on" aria-pressed="true">Sí</button>
+        <button class="chip" type="button" data-val="off" aria-pressed="false">No</button>
+      </div>
+    </div>
+    <div class="tw-row">
+      <span class="mono">Movimiento</span>
+      <div class="tw-opts" data-tw="motion">
+        <button class="chip" type="button" data-val="on" aria-pressed="true">Sí</button>
+        <button class="chip" type="button" data-val="off" aria-pressed="false">No</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+(function(){
+  'use strict';
+  var root = document.documentElement;
+
+  /* ---------- formato de moneda MXN ---------- */
+  var mxn = new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0});
+  function money(n){ return mxn.format(n); }
+
+  /* ============================================================
+     CATÁLOGO — datos de ejemplo.
+     Al migrar a Shopify, cada objeto equivale a un producto:
+     m = precio menudeo, w = precio mayoreo por par (lista "mayorista"),
+     was = precio anterior (compare_at_price), caja = pares por caja.
+     ============================================================ */
+  var PRODUCTOS = [
+    {n:"Retro Runner '92", c:'Blanco / Gris hueso', cat:'retro',    m:1899, w:1120, was:2299, caja:12, etiqueta:'nuevo',  tallas:[25,26,27,28,29,30], sin:[30]},
+    {n:'Court Low Clásico', c:'Negro / Blanco',      cat:'casual',   m:1349, w:795,  was:0,    caja:12, etiqueta:'',       tallas:[25,26,27,28,29,30], sin:[]},
+    {n:'Chunky Trail 4X',   c:'Arena / Olivo',       cat:'running',  m:2199, w:1290, was:0,    caja:12, etiqueta:'nuevo',  tallas:[26,27,28,29,30],    sin:[]},
+    {n:'Canvas Skate Hi',   c:'Negro total',         cat:'skate',    m:1099, w:640,  was:1399, caja:12, etiqueta:'pocos',  tallas:[25,26,27,28,29],    sin:[25,29]},
+    {n:'Mesh Runner Lite',  c:'Azul / Volt',         cat:'running',  m:1649, w:965,  was:0,    caja:12, etiqueta:'',       tallas:[25,26,27,28,29,30], sin:[]},
+    {n:"Básquet Mid '85",   c:'Rojo / Blanco',       cat:'basquet',  m:2449, w:1440, was:2799, caja:12, etiqueta:'pocos',  tallas:[26,27,28,29,30],    sin:[26]},
+    {n:'Slip-On Lona',      c:'Cuadros blanco/negro',cat:'casual',   m:949,  w:555,  was:0,    caja:24, etiqueta:'',       tallas:[24,25,26,27,28,29], sin:[]},
+    {n:'Tech Runner Knit',  c:'Gris humo',           cat:'retro',    m:1799, w:1055, was:0,    caja:12, etiqueta:'nuevo',  tallas:[25,26,27,28,29,30], sin:[27]}
+  ];
+
+  var ETIQUETAS = { nuevo:['Nuevo','badge-hot'], pocos:['Últimos pares','badge-low'] };
+
+  function tarjeta(p, i){
+    var num = String(i+1).padStart(2,'0');
+    var ahorro = Math.round((1 - p.w / p.m) * 100);
+    var msi = Math.ceil(p.m / 12);
+    var badge = p.etiqueta ? '<span class="badge '+ETIQUETAS[p.etiqueta][1]+'">'+ETIQUETAS[p.etiqueta][0]+'</span>' : '';
+    var sku = 'CL23-' + p.cat.slice(0,3).toUpperCase() + '-' + num;
+
+    var tallas = p.tallas.map(function(t){
+      var off = p.sin.indexOf(t) > -1;
+      return '<button class="size" type="button" aria-pressed="false" aria-label="Talla '+t+' mexicana'+(off?', agotada':'')+'"'+(off?' disabled':'')+'>'+t+'</button>';
+    }).join('');
+
+    return [
+      '<article class="card" data-cat="'+p.cat+'">',
+        '<div class="card-media">',
+          '<div class="card-badges">', badge, '</div>',
+          '<div class="slate slate-4x5">',
+            '<span class="slate-num" aria-hidden="true">', num, '</span>',
+            '<span class="ph-tag slate-tag">Foto producto · 4:5</span>',
+          '</div>',
+          '<button class="btn btn-sm btn-block quick" type="button" data-add="'+p.n+'">',
+            '<span class="p-retail">Agregar al carrito</span>',
+            '<span class="p-whole">Agregar 6 pares</span>',
+          '</button>',
+        '</div>',
+        '<div class="card-body">',
+          '<div class="card-sku mono"><span>', sku, '</span><span>Caja ', p.caja, '</span></div>',
+          '<h3 class="card-name">', p.n, '</h3>',
+          '<p class="card-color">', p.c, '</p>',
+          '<div class="sizes" role="group" aria-label="Tallas de ', p.n, '">', tallas, '</div>',
+          '<div class="price">',
+            '<div class="p-retail">',
+              '<div class="p-row"><span class="p-main">', money(p.m), '</span>',
+              (p.was ? '<span class="p-was">'+money(p.was)+'</span>' : ''), '</div>',
+              '<span class="mono p-note">o 12 MSI de ', money(msi), '</span>',
+            '</div>',
+            '<div class="p-whole">',
+              '<div class="p-row"><span class="p-main">', money(p.w), '</span><span class="p-unit">/ par</span></div>',
+              '<span class="mono p-note">Mínimo 6 pares · <span class="p-save">ahorras ', ahorro, '%</span></span>',
+            '</div>',
+          '</div>',
+        '</div>',
+      '</article>'
+    ].join('');
+  }
+
+  var grid = document.getElementById('catalogGrid');
+  if (grid) grid.innerHTML = PRODUCTOS.map(tarjeta).join('');
+
+  /* ---------- filtros ---------- */
+  var tarjetas = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var contador = document.getElementById('filterCount');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-filter]'), function(chip){
+    chip.addEventListener('click', function(){
+      var f = chip.getAttribute('data-filter');
+      Array.prototype.forEach.call(document.querySelectorAll('[data-filter]'), function(c){
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      var visibles = 0;
+      tarjetas.forEach(function(card){
+        var ok = (f === 'todos') || card.getAttribute('data-cat') === f;
+        card.hidden = !ok;
+        if (ok) visibles++;
+      });
+      if (contador) contador.textContent = visibles + (visibles === 1 ? ' modelo' : ' modelos');
+    });
+  });
+
+  /* ---------- tallas ---------- */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.size') : null;
+    if (!b || b.disabled) return;
+    var grupo = b.parentElement;
+    var activa = b.getAttribute('aria-pressed') === 'true';
+    Array.prototype.forEach.call(grupo.querySelectorAll('.size'), function(s){ s.setAttribute('aria-pressed','false'); });
+    b.setAttribute('aria-pressed', activa ? 'false' : 'true');
+  });
+
+  /* ---------- carrito y avisos ---------- */
+  var toast = document.getElementById('toast');
+  var toastText = document.getElementById('toastText');
+  var toastTimer;
+  function aviso(txt){
+    if (!toast) return;
+    toastText.textContent = txt;
+    toast.setAttribute('data-show','true');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.setAttribute('data-show','false'); }, 3200);
+  }
+
+  var carrito = 0;
+  var cartCount = document.getElementById('cartCount');
+  var cartBtn = document.getElementById('cartBtn');
+  function sumarCarrito(n, nombre){
+    carrito += n;
+    if (cartCount){ cartCount.textContent = carrito; cartCount.hidden = false; }
+    if (cartBtn) cartBtn.setAttribute('aria-label','Carrito, ' + carrito + ' artículos');
+    aviso(nombre + ' · ' + n + (n === 1 ? ' par agregado' : ' pares agregados'));
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('[data-add]') : null;
+    if (!b) return;
+    sumarCarrito(root.getAttribute('data-lane') === 'mayoreo' ? 6 : 1, b.getAttribute('data-add'));
+  });
+
+  /* ---------- switch de carril ---------- */
+  function setLane(lane){
+    root.setAttribute('data-lane', lane);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lane-btn]'), function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lane-btn') === lane));
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-lane-btn]'), function(b){
+    b.addEventListener('click', function(){ setLane(b.getAttribute('data-lane-btn')); });
+  });
+  setLane('menudeo');
+
+  /* ---------- preguntas frecuentes ---------- */
+  var PREGUNTAS = [
+    ['¿Cuál es el pedido mínimo de mayoreo?',
+     'Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo. A partir de doce pares se arma caja completa con corrida 25 a 30 MX y el envío va por nuestra cuenta.'],
+    ['¿Hacen envíos a toda la República?',
+     'Sí. En CDMX, Estado de México, Guadalajara y Monterrey entregamos en 24 a 48 horas. Al resto del país llega en 3 a 5 días hábiles. Todos los pedidos salen con número de guía.'],
+    ['¿Puedo cambiar la talla si no me queda?',
+     'En menudeo tienes 30 días naturales para cambiar talla, con el tenis sin uso y en su caja original. En mayoreo reponemos cualquier par con defecto de fábrica dentro de los 15 días siguientes a la entrega.'],
+    ['¿Emiten factura?',
+     'Sí, CFDI 4.0. Mándanos tu constancia de situación fiscal junto con el pedido y la factura sale el mismo día hábil.'],
+    ['¿Cómo sé si hay existencia de mi talla?',
+     'El inventario de la tienda está en vivo: si una talla aparece tachada, está agotada. Para mayoreo te mandamos la lista de existencias actualizada cada lunes.'],
+    ['¿Qué formas de pago aceptan?',
+     'En menudeo: tarjeta de crédito y débito, 12 meses sin intereses con bancos participantes, OXXO, transferencia SPEI y Mercado Pago. En mayoreo trabajamos con transferencia y, con historial de compra, crédito a 15 días.']
+  ];
+  var faqList = document.getElementById('faqList');
+  if (faqList){
+    faqList.innerHTML = PREGUNTAS.map(function(q, i){
+      return [
+        '<div class="faq-item">',
+          '<h3 style="margin:0">',
+            '<button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-'+i+'" id="faq-q-'+i+'">',
+              '<span>', q[0], '</span><span class="faq-ico" aria-hidden="true"></span>',
+            '</button>',
+          '</h3>',
+          '<div class="faq-a" id="faq-a-'+i+'" role="region" aria-labelledby="faq-q-'+i+'" style="height:0"><p>', q[1], '</p></div>',
+        '</div>'
+      ].join('');
+    }).join('');
+
+    Array.prototype.forEach.call(faqList.querySelectorAll('.faq-q'), function(btn){
+      btn.addEventListener('click', function(){
+        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+        var abierto = btn.getAttribute('aria-expanded') === 'true';
+        Array.prototype.forEach.call(faqList.querySelectorAll('.faq-q'), function(o){
+          if (o === btn) return;
+          o.setAttribute('aria-expanded','false');
+          var op = document.getElementById(o.getAttribute('aria-controls'));
+          if (op) op.style.height = '0px';
+        });
+        btn.setAttribute('aria-expanded', abierto ? 'false' : 'true');
+        panel.style.transition = 'height 300ms cubic-bezier(.2,.9,.12,1)';
+        panel.style.height = abierto ? '0px' : panel.scrollHeight + 'px';
+      });
+    });
+  }
+
+  /* ---------- cuenta regresiva al próximo viernes 20:00 ---------- */
+  function proximoDrop(){
+    var ahora = new Date();
+    var d = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), 20, 0, 0, 0);
+    var faltan = (5 - d.getDay() + 7) % 7;           // 5 = viernes
+    if (faltan === 0 && ahora.getTime() >= d.getTime()) faltan = 7;
+    d.setDate(d.getDate() + faltan);
+    return d;
+  }
+  var celdas = {};
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cd]'), function(el){
+    celdas[el.getAttribute('data-cd')] = el;
+  });
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var ms = proximoDrop() - new Date();
+    if (ms < 0) ms = 0;
+    var s = Math.floor(ms / 1000);
+    if (celdas.d) celdas.d.textContent = pad(Math.floor(s / 86400));
+    if (celdas.h) celdas.h.textContent = pad(Math.floor(s % 86400 / 3600));
+    if (celdas.m) celdas.m.textContent = pad(Math.floor(s % 3600 / 60));
+    if (celdas.s) celdas.s.textContent = pad(s % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ---------- marquesinas sin costura ---------- */
+  ['tickerGroup','brandsGroup'].forEach(function(id){
+    var g = document.getElementById(id);
+    if (g && g.parentElement) g.parentElement.appendChild(g.cloneNode(true));
+  });
+
+  /* ---------- formulario de mayoreo ---------- */
+  var wsForm = document.getElementById('wsForm');
+  if (wsForm){
+    wsForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var ok = true;
+      Array.prototype.forEach.call(wsForm.querySelectorAll('input, select'), function(ctrl){
+        var campo = ctrl.closest('.field');
+        var valido = ctrl.value.trim() !== '';
+        if (valido && ctrl.type === 'tel') valido = ctrl.value.replace(/\D/g,'').length === 10;
+        campo.setAttribute('data-invalid', String(!valido));
+        if (!valido && ok){ ctrl.focus(); ok = false; }
+      });
+      if (!ok){ aviso('Revisa los campos marcados'); return; }
+
+      var nombre = document.getElementById('ws-nombre').value.trim().split(' ')[0];
+      document.getElementById('wsOkMsg').textContent =
+        nombre + ', en menos de 24 horas te mandamos el catálogo y la lista de precios de mayorista por WhatsApp.';
+      wsForm.hidden = true;
+      document.getElementById('wsOk').hidden = false;
+      aviso('Solicitud de mayoreo registrada');
+    });
+
+    Array.prototype.forEach.call(wsForm.querySelectorAll('input, select'), function(ctrl){
+      ctrl.addEventListener('input', function(){ ctrl.closest('.field').setAttribute('data-invalid','false'); });
+    });
+  }
+  var waBtn = document.getElementById('waBtn');
+  if (waBtn) waBtn.addEventListener('click', function(){
+    aviso('Demo: aquí va el enlace a wa.me con el número real de la tienda');
+  });
+
+  /* ---------- boletín ---------- */
+  var newsForm = document.getElementById('newsForm');
+  if (newsForm){
+    newsForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var mail = document.getElementById('news-mail');
+      if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(mail.value.trim())){
+        document.getElementById('newsNote').textContent = 'Ese correo no se ve bien. Revísalo e intenta de nuevo.';
+        mail.focus();
+        return;
+      }
+      document.getElementById('newsNote').textContent = 'Listo. Te avisamos antes de cada drop.';
+      mail.value = '';
+      aviso('Suscripción registrada (demo)');
+    });
+  }
+
+  /* ---------- menú móvil ---------- */
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('burger');
+  function abrirMenu(abierto){
+    if (!menu) return;
+    menu.hidden = !abierto;
+    document.body.style.overflow = abierto ? 'hidden' : '';
+    if (burger) burger.setAttribute('aria-expanded', String(abierto));
+  }
+  if (burger) burger.addEventListener('click', function(){ abrirMenu(true); });
+  var closeMenu = document.getElementById('closeMenu');
+  if (closeMenu) closeMenu.addEventListener('click', function(){ abrirMenu(false); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-close]'), function(a){
+    a.addEventListener('click', function(){ abrirMenu(false); });
+  });
+
+  /* ---------- panel Tweaks ---------- */
+  var tweaks = document.getElementById('tweaks');
+  var tweaksOpen = document.getElementById('tweaksOpen');
+  function verTweaks(v){
+    if (!tweaks || !tweaksOpen) return;
+    tweaks.hidden = !v;
+    tweaksOpen.hidden = v;
+  }
+  if (tweaksOpen) tweaksOpen.addEventListener('click', function(){ verTweaks(true); });
+  var tweaksClose = document.getElementById('tweaksClose');
+  if (tweaksClose) tweaksClose.addEventListener('click', function(){ verTweaks(false); });
+
+  var APLICAR = {
+    theme:  function(v){ root.setAttribute('data-theme', v); },
+    accent: function(v){ root.style.setProperty('--orange', v); },
+    wdth:   function(v){ root.style.setProperty('--disp-wdth', v); },
+    cols:   function(v){ root.style.setProperty('--cols', v); },
+    ph:     function(v){ root.setAttribute('data-ph', v); },
+    grain:  function(v){ root.setAttribute('data-grain', v); },
+    motion: function(v){ root.setAttribute('data-motion', v); }
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tw]'), function(grupo){
+    var clave = grupo.getAttribute('data-tw');
+    Array.prototype.forEach.call(grupo.querySelectorAll('[data-val]'), function(chip){
+      chip.addEventListener('click', function(){
+        Array.prototype.forEach.call(grupo.querySelectorAll('[data-val]'), function(c){
+          c.setAttribute('aria-pressed', String(c === chip));
+        });
+        APLICAR[clave](chip.getAttribute('data-val'));
+      });
+    });
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if (menu && !menu.hidden) abrirMenu(false);
+    if (tweaks && !tweaks.hidden) verTweaks(false);
+  });
+
+  /* ---------- aparición al hacer scroll ---------- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && reveals.length){
+    var io = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(en){
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      });
+    }, { threshold:0.06, rootMargin:'0px 0px -40px 0px' });
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    document.body.classList.add('all-visible');
+  }
+  // red de seguridad: nada se queda invisible
+  setTimeout(function(){ document.body.classList.add('all-visible'); }, 2400);
+})();
+</script>
+</body>
+</html>
