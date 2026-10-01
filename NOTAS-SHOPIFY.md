@@ -105,3 +105,15 @@ No forma parte de la tienda. Se borra antes de publicar.
 - Respeta `prefers-reduced-motion`.
 - Sin scroll horizontal de 390 px a 1920 px.
 - Sin JavaScript de terceros, sin imágenes pesadas: la página pesa menos de 100 KB sin fotos.
+
+---
+
+## Dos versiones del archivo
+
+| Archivo | Para qué | Peso |
+|---|---|---|
+| `calle23-landing.html` | Migrar a Shopify. Carga las tipografías desde Google Fonts. | 78 KB |
+| `calle23-landing-offline.html` | Presentar y mandar al cliente. Tipografías incrustadas: abre sin internet y no hace ninguna petición de red. | 392 KB |
+
+Las dos son idénticas en diseño y comportamiento. Para el tema de Shopify usa la primera:
+no conviene meter 300 KB de tipografías en base64 dentro de un tema.
