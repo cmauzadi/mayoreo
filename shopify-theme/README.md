@@ -3,6 +3,21 @@
 Tema completo para tienda de tenis con doble canal: **mayoreo y menudeo**.
 Pasa `theme-check` de Shopify sin errores ni advertencias.
 
+## Por qué la portada es `index.liquid` y no `index.json`
+
+Shopify valida las plantillas JSON al subir el tema. Si algo no le cuadra, las
+descarta **en silencio**: acepta el resto del tema y la tienda se queda sin
+portada, sirviendo el 404 en la raíz. Eso pasó dos veces durante el desarrollo.
+
+Por eso la portada es una plantilla Liquid con secciones estáticas. No pasa por
+ese validador, así que no puede desaparecer.
+
+Lo que se gana: la portada siempre existe.
+Lo que se pierde: las secciones de la portada no se reordenan arrastrándolas en
+el personalizador. Para cambiar el orden se mueven las líneas de
+`templates/index.liquid`. Todo el texto, las imágenes y los bloques se siguen
+editando normal desde el personalizador.
+
 ## Instalar
 
 1. En tu panel de Shopify: **Tienda online → Temas → Agregar tema → Subir archivo ZIP**.
@@ -113,5 +128,5 @@ layout/     theme.liquid y password.liquid
 locales/    traducciones (vacías: el texto vive en los ajustes)
 sections/   13 secciones editables
 snippets/   slate, product-card, demo-cards, icono
-templates/  las 19 plantillas que Shopify requiere
+templates/  las 19 plantillas que Shopify requiere (inicio en Liquid, no JSON)
 ```

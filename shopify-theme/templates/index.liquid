@@ -1,0 +1,25 @@
+{%- comment -%}
+  Portada.
+
+  Se usa una plantilla .liquid y no .json a propósito: una plantilla JSON pasa por
+  el validador de Shopify al subir el tema y, si algo no le cuadra, la descarta en
+  silencio y la tienda se queda sin inicio. Una plantilla Liquid no puede fallar así.
+
+  Las secciones estáticas toman los ajustes y los bloques de la clave "default" del
+  schema de cada una, de modo que la portada se ve completa desde el primer momento.
+  Todo el texto y las imágenes se siguen editando desde el personalizador.
+
+  El precio: no se pueden reordenar ni quitar secciones arrastrándolas. Para cambiar
+  el orden, mueve estas líneas.
+{%- endcomment -%}
+
+{% section 'hero' %}
+{% section 'brand-strip' %}
+{% section 'category-grid' %}
+{% section 'catalog' %}
+{% section 'wholesale' %}
+{% section 'lookbook' %}
+{% section 'services' %}
+{% section 'social-grid' %}
+{% section 'faq' %}
+{% section 'newsletter' %}
