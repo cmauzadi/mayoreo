@@ -38,30 +38,95 @@
   "name": "Preguntas frecuentes",
   "max_blocks": 12,
   "settings": [
-    { "type": "checkbox", "id": "sin_margen_superior", "label": "Pegar a la sección de arriba", "default": true },
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Ayuda" },
-    { "type": "text", "id": "titulo", "label": "Título", "default": "Preguntas frecuentes" },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "¿No encuentras tu respuesta? Escríbenos por WhatsApp de lunes a sábado, 9:00 a 19:00 h." }
+    {
+      "type": "checkbox",
+      "id": "sin_margen_superior",
+      "label": "Pegar a la sección de arriba",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Ayuda"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título",
+      "default": "Preguntas frecuentes"
+    },
+    {
+      "type": "textarea",
+      "id": "texto",
+      "label": "Texto",
+      "default": "¿No encuentras tu respuesta? Escríbenos por WhatsApp de lunes a sábado, 9:00 a 19:00 h."
+    }
   ],
   "blocks": [
     {
       "type": "pregunta",
       "name": "Pregunta",
       "settings": [
-        { "type": "text", "id": "pregunta", "label": "Pregunta", "default": "¿Cuál es el pedido mínimo de mayoreo?" },
-        { "type": "richtext", "id": "respuesta", "label": "Respuesta", "default": "<p>Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo.</p>" }
+        {
+          "type": "text",
+          "id": "pregunta",
+          "label": "Pregunta",
+          "default": "¿Cuál es el pedido mínimo de mayoreo?"
+        },
+        {
+          "type": "richtext",
+          "id": "respuesta",
+          "label": "Respuesta",
+          "default": "<p>Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo.</p>"
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Preguntas frecuentes" }],
   "default": {
     "blocks": [
-      { "type": "pregunta", "settings": { "pregunta": "¿Cuál es el pedido mínimo de mayoreo?", "respuesta": "<p>Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo. A partir de doce pares se arma caja completa con corrida 25 a 30 MX y el envío va por nuestra cuenta.</p>" } },
-      { "type": "pregunta", "settings": { "pregunta": "¿Hacen envíos a toda la República?", "respuesta": "<p>Sí. En CDMX, Estado de México, Guadalajara y Monterrey entregamos en 24 a 48 horas. Al resto del país llega en 3 a 5 días hábiles. Todos los pedidos salen con número de guía.</p>" } },
-      { "type": "pregunta", "settings": { "pregunta": "¿Puedo cambiar la talla si no me queda?", "respuesta": "<p>En menudeo tienes 30 días naturales para cambiar talla, con el tenis sin uso y en su caja original. En mayoreo reponemos cualquier par con defecto de fábrica dentro de los 15 días siguientes a la entrega.</p>" } },
-      { "type": "pregunta", "settings": { "pregunta": "¿Emiten factura?", "respuesta": "<p>Sí, CFDI 4.0. Mándanos tu constancia de situación fiscal junto con el pedido y la factura sale el mismo día hábil.</p>" } },
-      { "type": "pregunta", "settings": { "pregunta": "¿Cómo sé si hay existencia de mi talla?", "respuesta": "<p>El inventario de la tienda está en vivo: si una talla aparece tachada, está agotada. Para mayoreo te mandamos la lista de existencias actualizada cada lunes.</p>" } },
-      { "type": "pregunta", "settings": { "pregunta": "¿Qué formas de pago aceptan?", "respuesta": "<p>En menudeo: tarjeta de crédito y débito, 12 meses sin intereses con bancos participantes, OXXO, transferencia SPEI y Mercado Pago. En mayoreo trabajamos con transferencia y, con historial de compra, crédito a 15 días.</p>" } }
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Cuál es el pedido mínimo de mayoreo?",
+          "respuesta": "<p>Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo. A partir de doce pares se arma caja completa con corrida 25 a 30 MX y el envío va por nuestra cuenta.</p>"
+        }
+      },
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Hacen envíos a toda la República?",
+          "respuesta": "<p>Sí. En CDMX, Estado de México, Guadalajara y Monterrey entregamos en 24 a 48 horas. Al resto del país llega en 3 a 5 días hábiles. Todos los pedidos salen con número de guía.</p>"
+        }
+      },
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Puedo cambiar la talla si no me queda?",
+          "respuesta": "<p>En menudeo tienes 30 días naturales para cambiar talla, con el tenis sin uso y en su caja original. En mayoreo reponemos cualquier par con defecto de fábrica dentro de los 15 días siguientes a la entrega.</p>"
+        }
+      },
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Emiten factura?",
+          "respuesta": "<p>Sí, CFDI 4.0. Mándanos tu constancia de situación fiscal junto con el pedido y la factura sale el mismo día hábil.</p>"
+        }
+      },
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Cómo sé si hay existencia de mi talla?",
+          "respuesta": "<p>El inventario de la tienda está en vivo: si una talla aparece tachada, está agotada. Para mayoreo te mandamos la lista de existencias actualizada cada lunes.</p>"
+        }
+      },
+      {
+        "type": "pregunta",
+        "settings": {
+          "pregunta": "¿Qué formas de pago aceptan?",
+          "respuesta": "<p>En menudeo: tarjeta de crédito y débito, 12 meses sin intereses con bancos participantes, OXXO, transferencia SPEI y Mercado Pago. En mayoreo trabajamos con transferencia y, con historial de compra, crédito a 15 días.</p>"
+        }
+      }
     ]
   }
 }

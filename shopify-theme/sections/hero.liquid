@@ -82,7 +82,12 @@
   "name": "Portada",
   "max_blocks": 4,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Tenis urbanos · Envíos a todo México" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Tenis urbanos · Envíos a todo México"
+    },
     {
       "type": "textarea",
       "id": "titulo",
@@ -90,54 +95,179 @@
       "default": "Pares\nque se\nvenden solos",
       "info": "Un renglón por línea. El último renglón se pinta con el color de acento."
     },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Catálogo de tenis urbanos, retro y deportivos. Compra un par o surte tu tienda con corrida completa: mismo almacén, dos listas de precio." },
-    { "type": "image_picker", "id": "imagen", "label": "Imagen principal", "info": "Vertical 4:5. Sin imagen se muestra un marcador de posición." },
-    { "type": "header", "content": "Botones" },
-    { "type": "text", "id": "cta1_texto", "label": "Botón principal", "default": "Ver catálogo" },
-    { "type": "url", "id": "cta1_url", "label": "Enlace del botón principal" },
-    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Precios de mayoreo" },
-    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
-    { "type": "header", "content": "Switch de carril" },
-    { "type": "checkbox", "id": "mostrar_carril", "label": "Mostrar en la portada", "default": true },
-    { "type": "text", "id": "carril_label", "label": "Texto encima del switch", "default": "Elige cómo quieres comprar" },
-    { "type": "header", "content": "Cuenta regresiva" },
-    { "type": "checkbox", "id": "mostrar_drop", "label": "Mostrar cuenta regresiva", "default": true },
-    { "type": "text", "id": "drop_titulo", "label": "Título", "default": "Próximo drop" },
-    { "type": "text", "id": "drop_nota", "label": "Nota", "default": "Viernes 20:00 h" },
+    {
+      "type": "textarea",
+      "id": "texto",
+      "label": "Texto",
+      "default": "Catálogo de tenis urbanos, retro y deportivos. Compra un par o surte tu tienda con corrida completa: mismo almacén, dos listas de precio."
+    },
+    {
+      "type": "image_picker",
+      "id": "imagen",
+      "label": "Imagen principal",
+      "info": "Vertical 4:5. Sin imagen se muestra un marcador de posición."
+    },
+    {
+      "type": "header",
+      "content": "Botones"
+    },
+    {
+      "type": "text",
+      "id": "cta1_texto",
+      "label": "Botón principal",
+      "default": "Ver catálogo"
+    },
+    {
+      "type": "url",
+      "id": "cta1_url",
+      "label": "Enlace del botón principal"
+    },
+    {
+      "type": "text",
+      "id": "cta2_texto",
+      "label": "Botón secundario",
+      "default": "Precios de mayoreo"
+    },
+    {
+      "type": "url",
+      "id": "cta2_url",
+      "label": "Enlace del botón secundario"
+    },
+    {
+      "type": "header",
+      "content": "Switch de carril"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_carril",
+      "label": "Mostrar en la portada",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "carril_label",
+      "label": "Texto encima del switch",
+      "default": "Elige cómo quieres comprar"
+    },
+    {
+      "type": "header",
+      "content": "Cuenta regresiva"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_drop",
+      "label": "Mostrar cuenta regresiva",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "drop_titulo",
+      "label": "Título",
+      "default": "Próximo drop"
+    },
+    {
+      "type": "text",
+      "id": "drop_nota",
+      "label": "Nota",
+      "default": "Viernes 20:00 h"
+    },
     {
       "type": "select",
       "id": "drop_dia",
       "label": "Día del drop",
       "options": [
-        { "value": "1", "label": "Lunes" },
-        { "value": "2", "label": "Martes" },
-        { "value": "3", "label": "Miércoles" },
-        { "value": "4", "label": "Jueves" },
-        { "value": "5", "label": "Viernes" },
-        { "value": "6", "label": "Sábado" },
-        { "value": "0", "label": "Domingo" }
+        {
+          "value": "1",
+          "label": "Lunes"
+        },
+        {
+          "value": "2",
+          "label": "Martes"
+        },
+        {
+          "value": "3",
+          "label": "Miércoles"
+        },
+        {
+          "value": "4",
+          "label": "Jueves"
+        },
+        {
+          "value": "5",
+          "label": "Viernes"
+        },
+        {
+          "value": "6",
+          "label": "Sábado"
+        },
+        {
+          "value": "0",
+          "label": "Domingo"
+        }
       ],
       "default": "5"
     },
-    { "type": "range", "id": "drop_hora", "label": "Hora del drop", "min": 0, "max": 23, "step": 1, "unit": "h", "default": 20 }
+    {
+      "type": "range",
+      "id": "drop_hora",
+      "label": "Hora del drop",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "unit": "h",
+      "default": 20
+    }
   ],
   "blocks": [
     {
       "type": "dato",
       "name": "Dato",
       "settings": [
-        { "type": "text", "id": "dato", "label": "Dato", "default": "24–72 h" },
-        { "type": "text", "id": "etiqueta", "label": "Etiqueta", "default": "Entrega zona metro" }
+        {
+          "type": "text",
+          "id": "dato",
+          "label": "Dato",
+          "default": "24–72 h"
+        },
+        {
+          "type": "text",
+          "id": "etiqueta",
+          "label": "Etiqueta",
+          "default": "Entrega zona metro"
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Portada" }],
   "default": {
     "blocks": [
-      { "type": "dato", "settings": { "dato": "24–72 h", "etiqueta": "Entrega zona metro" } },
-      { "type": "dato", "settings": { "dato": "6 pares", "etiqueta": "Mínimo de mayoreo" } },
-      { "type": "dato", "settings": { "dato": "25–30 MX", "etiqueta": "Corrida completa" } },
-      { "type": "dato", "settings": { "dato": "30 días", "etiqueta": "Cambios en menudeo" } }
+      {
+        "type": "dato",
+        "settings": {
+          "dato": "24–72 h",
+          "etiqueta": "Entrega zona metro"
+        }
+      },
+      {
+        "type": "dato",
+        "settings": {
+          "dato": "6 pares",
+          "etiqueta": "Mínimo de mayoreo"
+        }
+      },
+      {
+        "type": "dato",
+        "settings": {
+          "dato": "25–30 MX",
+          "etiqueta": "Corrida completa"
+        }
+      },
+      {
+        "type": "dato",
+        "settings": {
+          "dato": "30 días",
+          "etiqueta": "Cambios en menudeo"
+        }
+      }
     ]
   }
 }

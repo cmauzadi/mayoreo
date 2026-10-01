@@ -12,6 +12,15 @@ portada, sirviendo el 404 en la raíz. Eso pasó dos veces durante el desarrollo
 Por eso la portada es una plantilla Liquid con secciones estáticas. No pasa por
 ese validador, así que no puede desaparecer.
 
+Por la misma razón, los schemas de las secciones llevan `default` y **nunca**
+`presets`. En Shopify los dos son excluyentes: `default` es para secciones
+estáticas y `presets` para las que se agregan a mano. Juntos invalidan el schema,
+Shopify descarta la sección entera y la portada se cae con
+"is not a valid section type". `build-theme.sh` falla si la combinación reaparece.
+
+Consecuencia: estas secciones no aparecen en "Agregar sección" para otras
+páginas. Viven en la portada.
+
 Lo que se gana: la portada siempre existe.
 Lo que se pierde: las secciones de la portada no se reordenan arrastrándolas en
 el personalizador. Para cambiar el orden se mueven las líneas de

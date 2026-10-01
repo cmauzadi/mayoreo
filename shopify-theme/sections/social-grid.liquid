@@ -29,25 +29,63 @@
   "name": "Instagram",
   "max_blocks": 12,
   "settings": [
-    { "type": "checkbox", "id": "sin_margen_superior", "label": "Pegar a la sección de arriba", "default": true },
-    { "type": "text", "id": "handle", "label": "Usuario", "default": "@tutienda" },
-    { "type": "text", "id": "titulo", "label": "Título", "default": "En la calle" }
+    {
+      "type": "checkbox",
+      "id": "sin_margen_superior",
+      "label": "Pegar a la sección de arriba",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Usuario",
+      "default": "@tutienda"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título",
+      "default": "En la calle"
+    }
   ],
   "blocks": [
     {
       "type": "post",
       "name": "Publicación",
       "settings": [
-        { "type": "image_picker", "id": "imagen", "label": "Imagen" },
-        { "type": "url", "id": "url", "label": "Enlace" }
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Enlace"
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Instagram" }],
   "default": {
     "blocks": [
-      { "type": "post" }, { "type": "post" }, { "type": "post" },
-      { "type": "post" }, { "type": "post" }, { "type": "post" }
+      {
+        "type": "post"
+      },
+      {
+        "type": "post"
+      },
+      {
+        "type": "post"
+      },
+      {
+        "type": "post"
+      },
+      {
+        "type": "post"
+      },
+      {
+        "type": "post"
+      }
     ]
   }
 }

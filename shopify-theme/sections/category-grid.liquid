@@ -45,30 +45,87 @@
   "name": "Categorías",
   "max_blocks": 5,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Por categoría" },
-    { "type": "text", "id": "titulo", "label": "Título", "default": "Busca por tipo de pisada" },
-    { "type": "text", "id": "cta_texto", "label": "Botón", "default": "Ver todo el catálogo" },
-    { "type": "url", "id": "cta_url", "label": "Enlace del botón" }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Por categoría"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título",
+      "default": "Busca por tipo de pisada"
+    },
+    {
+      "type": "text",
+      "id": "cta_texto",
+      "label": "Botón",
+      "default": "Ver todo el catálogo"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Enlace del botón"
+    }
   ],
   "blocks": [
     {
       "type": "categoria",
       "name": "Categoría",
       "settings": [
-        { "type": "collection", "id": "coleccion", "label": "Colección" },
-        { "type": "text", "id": "titulo", "label": "Título", "info": "Si lo dejas vacío se usa el nombre de la colección." },
-        { "type": "image_picker", "id": "imagen", "label": "Imagen", "info": "Si la dejas vacía se usa la imagen de la colección." }
+        {
+          "type": "collection",
+          "id": "coleccion",
+          "label": "Colección"
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "info": "Si lo dejas vacío se usa el nombre de la colección."
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen",
+          "info": "Si la dejas vacía se usa la imagen de la colección."
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Categorías" }],
   "default": {
     "blocks": [
-      { "type": "categoria", "settings": { "titulo": "Retro" } },
-      { "type": "categoria", "settings": { "titulo": "Running" } },
-      { "type": "categoria", "settings": { "titulo": "Skate" } },
-      { "type": "categoria", "settings": { "titulo": "Básquet" } },
-      { "type": "categoria", "settings": { "titulo": "Niños" } }
+      {
+        "type": "categoria",
+        "settings": {
+          "titulo": "Retro"
+        }
+      },
+      {
+        "type": "categoria",
+        "settings": {
+          "titulo": "Running"
+        }
+      },
+      {
+        "type": "categoria",
+        "settings": {
+          "titulo": "Skate"
+        }
+      },
+      {
+        "type": "categoria",
+        "settings": {
+          "titulo": "Básquet"
+        }
+      },
+      {
+        "type": "categoria",
+        "settings": {
+          "titulo": "Niños"
+        }
+      }
     ]
   }
 }

@@ -122,50 +122,196 @@
   "name": "Mayoreo",
   "max_blocks": 10,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Mayoreo" },
-    { "type": "text", "id": "titulo", "label": "Título", "default": "Surte tu tienda" },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Trabajamos con tiendas de barrio, bazares, tianguis y vendedores en línea. Entre más pares, mejor precio por par. Sin contrato, sin cuota de membresía." },
-    { "type": "text", "id": "aviso_ejemplo", "label": "Aviso de precios de ejemplo", "default": "Sustituye estos rangos y precios por tu lista real antes de publicar.", "info": "Déjalo vacío cuando las escalas ya sean reales." },
-    { "type": "header", "content": "Formulario" },
-    { "type": "text", "id": "form_eyebrow", "label": "Antetítulo", "default": "Solicita tu lista de precios" },
-    { "type": "text", "id": "form_titulo", "label": "Título", "default": "Abre tu cuenta de mayorista" },
-    { "type": "text", "id": "form_boton", "label": "Botón", "default": "Recibir lista de precios" },
-    { "type": "textarea", "id": "form_exito", "label": "Mensaje de éxito", "default": "En menos de 24 horas te mandamos el catálogo y la lista de precios de mayorista." },
-    { "type": "textarea", "id": "form_nota", "label": "Nota al pie", "default": "Revisamos cada solicitud a mano. Al aprobarla etiquetamos tu cuenta como mayorista y los precios cambian solos." },
-    { "type": "textarea", "id": "estados", "label": "Estados", "default": "Ciudad de México, Estado de México, Jalisco, Nuevo León, Puebla, Guanajuato, Otro", "info": "Separados por coma." },
-    { "type": "textarea", "id": "volumenes", "label": "Rangos de volumen", "default": "6 a 11 pares, 12 a 35 pares, 36 a 99 pares, 100 pares o más", "info": "Separados por coma." }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Antetítulo",
+      "default": "Mayoreo"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título",
+      "default": "Surte tu tienda"
+    },
+    {
+      "type": "textarea",
+      "id": "texto",
+      "label": "Texto",
+      "default": "Trabajamos con tiendas de barrio, bazares, tianguis y vendedores en línea. Entre más pares, mejor precio por par. Sin contrato, sin cuota de membresía."
+    },
+    {
+      "type": "text",
+      "id": "aviso_ejemplo",
+      "label": "Aviso de precios de ejemplo",
+      "default": "Sustituye estos rangos y precios por tu lista real antes de publicar.",
+      "info": "Déjalo vacío cuando las escalas ya sean reales."
+    },
+    {
+      "type": "header",
+      "content": "Formulario"
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Antetítulo",
+      "default": "Solicita tu lista de precios"
+    },
+    {
+      "type": "text",
+      "id": "form_titulo",
+      "label": "Título",
+      "default": "Abre tu cuenta de mayorista"
+    },
+    {
+      "type": "text",
+      "id": "form_boton",
+      "label": "Botón",
+      "default": "Recibir lista de precios"
+    },
+    {
+      "type": "textarea",
+      "id": "form_exito",
+      "label": "Mensaje de éxito",
+      "default": "En menos de 24 horas te mandamos el catálogo y la lista de precios de mayorista."
+    },
+    {
+      "type": "textarea",
+      "id": "form_nota",
+      "label": "Nota al pie",
+      "default": "Revisamos cada solicitud a mano. Al aprobarla etiquetamos tu cuenta como mayorista y los precios cambian solos."
+    },
+    {
+      "type": "textarea",
+      "id": "estados",
+      "label": "Estados",
+      "default": "Ciudad de México, Estado de México, Jalisco, Nuevo León, Puebla, Guanajuato, Otro",
+      "info": "Separados por coma."
+    },
+    {
+      "type": "textarea",
+      "id": "volumenes",
+      "label": "Rangos de volumen",
+      "default": "6 a 11 pares, 12 a 35 pares, 36 a 99 pares, 100 pares o más",
+      "info": "Separados por coma."
+    }
   ],
   "blocks": [
     {
       "type": "escala",
       "name": "Escala de precio",
       "settings": [
-        { "type": "text", "id": "rango", "label": "Rango", "default": "6–11" },
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Pares surtidos" },
-        { "type": "text", "id": "nota", "label": "Nota", "default": "Modelos y tallas a tu elección" },
-        { "type": "text", "id": "precio", "label": "Precio", "default": "$1,120 / par" },
-        { "type": "text", "id": "ahorro", "label": "Ahorro", "default": "−38% vs menudeo" }
+        {
+          "type": "text",
+          "id": "rango",
+          "label": "Rango",
+          "default": "6–11"
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Pares surtidos"
+        },
+        {
+          "type": "text",
+          "id": "nota",
+          "label": "Nota",
+          "default": "Modelos y tallas a tu elección"
+        },
+        {
+          "type": "text",
+          "id": "precio",
+          "label": "Precio",
+          "default": "$1,120 / par"
+        },
+        {
+          "type": "text",
+          "id": "ahorro",
+          "label": "Ahorro",
+          "default": "−38% vs menudeo"
+        }
       ]
     },
     {
       "type": "paso",
       "name": "Paso del proceso",
       "settings": [
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Mándanos tus datos" },
-        { "type": "textarea", "id": "texto", "label": "Texto", "default": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil." }
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Mándanos tus datos"
+        },
+        {
+          "type": "textarea",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil."
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Mayoreo" }],
   "default": {
     "blocks": [
-      { "type": "escala", "settings": { "rango": "6–11", "titulo": "Pares surtidos", "nota": "Modelos y tallas a tu elección", "precio": "$1,120 / par", "ahorro": "−38% vs menudeo" } },
-      { "type": "escala", "settings": { "rango": "12–35", "titulo": "Caja completa", "nota": "Corrida 25–30 MX · envío gratis", "precio": "$995 / par", "ahorro": "−45% vs menudeo" } },
-      { "type": "escala", "settings": { "rango": "36+", "titulo": "Distribuidor", "nota": "Crédito a 15 días con historial", "precio": "$845 / par", "ahorro": "−53% vs menudeo" } },
-      { "type": "paso", "settings": { "titulo": "Mándanos tus datos", "texto": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil." } },
-      { "type": "paso", "settings": { "titulo": "Recibe catálogo y lista de precios", "texto": "PDF con existencias reales y corridas disponibles." } },
-      { "type": "paso", "settings": { "titulo": "Arma tu pedido", "texto": "Mezcla modelos y tallas hasta llegar al mínimo." } },
-      { "type": "paso", "settings": { "titulo": "Pagas y se surte", "texto": "Transferencia o depósito. Sale de almacén en 24–72 h." } }
+      {
+        "type": "escala",
+        "settings": {
+          "rango": "6–11",
+          "titulo": "Pares surtidos",
+          "nota": "Modelos y tallas a tu elección",
+          "precio": "$1,120 / par",
+          "ahorro": "−38% vs menudeo"
+        }
+      },
+      {
+        "type": "escala",
+        "settings": {
+          "rango": "12–35",
+          "titulo": "Caja completa",
+          "nota": "Corrida 25–30 MX · envío gratis",
+          "precio": "$995 / par",
+          "ahorro": "−45% vs menudeo"
+        }
+      },
+      {
+        "type": "escala",
+        "settings": {
+          "rango": "36+",
+          "titulo": "Distribuidor",
+          "nota": "Crédito a 15 días con historial",
+          "precio": "$845 / par",
+          "ahorro": "−53% vs menudeo"
+        }
+      },
+      {
+        "type": "paso",
+        "settings": {
+          "titulo": "Mándanos tus datos",
+          "texto": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil."
+        }
+      },
+      {
+        "type": "paso",
+        "settings": {
+          "titulo": "Recibe catálogo y lista de precios",
+          "texto": "PDF con existencias reales y corridas disponibles."
+        }
+      },
+      {
+        "type": "paso",
+        "settings": {
+          "titulo": "Arma tu pedido",
+          "texto": "Mezcla modelos y tallas hasta llegar al mínimo."
+        }
+      },
+      {
+        "type": "paso",
+        "settings": {
+          "titulo": "Pagas y se surte",
+          "texto": "Transferencia o depósito. Sale de almacén en 24–72 h."
+        }
+      }
     ]
   }
 }

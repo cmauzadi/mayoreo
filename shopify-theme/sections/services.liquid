@@ -19,7 +19,12 @@
   "name": "Servicios",
   "max_blocks": 4,
   "settings": [
-    { "type": "checkbox", "id": "sin_margen_superior", "label": "Pegar a la sección de arriba", "default": true }
+    {
+      "type": "checkbox",
+      "id": "sin_margen_superior",
+      "label": "Pegar a la sección de arriba",
+      "default": true
+    }
   ],
   "blocks": [
     {
@@ -31,27 +36,82 @@
           "id": "icono",
           "label": "Ícono",
           "options": [
-            { "value": "envio", "label": "Camión de envío" },
-            { "value": "caja", "label": "Caja" },
-            { "value": "garantia", "label": "Escudo" },
-            { "value": "pago", "label": "Tarjeta" },
-            { "value": "tienda", "label": "Tienda" },
-            { "value": "reloj", "label": "Reloj" }
+            {
+              "value": "envio",
+              "label": "Camión de envío"
+            },
+            {
+              "value": "caja",
+              "label": "Caja"
+            },
+            {
+              "value": "garantia",
+              "label": "Escudo"
+            },
+            {
+              "value": "pago",
+              "label": "Tarjeta"
+            },
+            {
+              "value": "tienda",
+              "label": "Tienda"
+            },
+            {
+              "value": "reloj",
+              "label": "Reloj"
+            }
           ],
           "default": "envio"
         },
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Envío a todo México" },
-        { "type": "textarea", "id": "texto", "label": "Texto", "default": "24 a 72 horas en zonas metropolitanas." }
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Envío a todo México"
+        },
+        {
+          "type": "textarea",
+          "id": "texto",
+          "label": "Texto",
+          "default": "24 a 72 horas en zonas metropolitanas."
+        }
       ]
     }
   ],
-  "presets": [{ "name": "Servicios" }],
   "default": {
     "blocks": [
-      { "type": "servicio", "settings": { "icono": "envio", "titulo": "Envío a todo México", "texto": "24 a 72 horas en zonas metropolitanas. Gratis desde $1,499 en menudeo y desde 12 pares en mayoreo." } },
-      { "type": "servicio", "settings": { "icono": "caja", "titulo": "Corrida completa", "texto": "Caja de 12 pares con tallas 25 a 30 MX. También armamos surtidos según lo que más te rote." } },
-      { "type": "servicio", "settings": { "icono": "garantia", "titulo": "Cambios sin pelear", "texto": "30 días para cambiar talla en menudeo. En mayoreo reponemos cualquier par con defecto de fábrica." } },
-      { "type": "servicio", "settings": { "icono": "pago", "titulo": "Pagas como quieras", "texto": "Tarjeta, 12 MSI, OXXO, transferencia SPEI y Mercado Pago. Facturamos CFDI 4.0 el mismo día." } }
+      {
+        "type": "servicio",
+        "settings": {
+          "icono": "envio",
+          "titulo": "Envío a todo México",
+          "texto": "24 a 72 horas en zonas metropolitanas. Gratis desde $1,499 en menudeo y desde 12 pares en mayoreo."
+        }
+      },
+      {
+        "type": "servicio",
+        "settings": {
+          "icono": "caja",
+          "titulo": "Corrida completa",
+          "texto": "Caja de 12 pares con tallas 25 a 30 MX. También armamos surtidos según lo que más te rote."
+        }
+      },
+      {
+        "type": "servicio",
+        "settings": {
+          "icono": "garantia",
+          "titulo": "Cambios sin pelear",
+          "texto": "30 días para cambiar talla en menudeo. En mayoreo reponemos cualquier par con defecto de fábrica."
+        }
+      },
+      {
+        "type": "servicio",
+        "settings": {
+          "icono": "pago",
+          "titulo": "Pagas como quieras",
+          "texto": "Tarjeta, 12 MSI, OXXO, transferencia SPEI y Mercado Pago. Facturamos CFDI 4.0 el mismo día."
+        }
+      }
     ]
   }
 }
