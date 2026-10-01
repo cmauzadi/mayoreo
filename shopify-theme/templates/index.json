@@ -1,18 +1,490 @@
 {
   "sections": {
-    "hero":       { "type": "hero" },
-    "brands":     { "type": "brand-strip" },
-    "categories": { "type": "category-grid" },
-    "catalog":    { "type": "catalog" },
-    "wholesale":  { "type": "wholesale" },
-    "lookbook":   { "type": "lookbook" },
-    "services":   { "type": "services" },
-    "social":     { "type": "social-grid" },
-    "faq":        { "type": "faq" },
-    "newsletter": { "type": "newsletter" }
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Tenis urbanos · Envíos a todo México",
+        "titulo": "Pares\nque se\nvenden solos",
+        "texto": "Catálogo de tenis urbanos, retro y deportivos. Compra un par o surte tu tienda con corrida completa: mismo almacén, dos listas de precio.",
+        "cta1_texto": "Ver catálogo",
+        "cta2_texto": "Precios de mayoreo",
+        "mostrar_carril": true,
+        "carril_label": "Elige cómo quieres comprar",
+        "mostrar_drop": true,
+        "drop_titulo": "Próximo drop",
+        "drop_nota": "Viernes 20:00 h",
+        "drop_dia": "5",
+        "drop_hora": 20
+      },
+      "blocks": {
+        "dato-1": {
+          "type": "dato",
+          "settings": {
+            "dato": "24–72 h",
+            "etiqueta": "Entrega zona metro"
+          }
+        },
+        "dato-2": {
+          "type": "dato",
+          "settings": {
+            "dato": "6 pares",
+            "etiqueta": "Mínimo de mayoreo"
+          }
+        },
+        "dato-3": {
+          "type": "dato",
+          "settings": {
+            "dato": "25–30 MX",
+            "etiqueta": "Corrida completa"
+          }
+        },
+        "dato-4": {
+          "type": "dato",
+          "settings": {
+            "dato": "30 días",
+            "etiqueta": "Cambios en menudeo"
+          }
+        }
+      },
+      "block_order": [
+        "dato-1",
+        "dato-2",
+        "dato-3",
+        "dato-4"
+      ]
+    },
+    "brands": {
+      "type": "brand-strip",
+      "settings": {
+        "titulo": "Marcas en catálogo"
+      },
+      "blocks": {
+        "marca-1": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-2": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-3": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-4": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-5": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-6": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-7": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        },
+        "marca-8": {
+          "type": "marca",
+          "settings": {
+            "nombre": "Logo marca"
+          }
+        }
+      },
+      "block_order": [
+        "marca-1",
+        "marca-2",
+        "marca-3",
+        "marca-4",
+        "marca-5",
+        "marca-6",
+        "marca-7",
+        "marca-8"
+      ]
+    },
+    "categories": {
+      "type": "category-grid",
+      "settings": {
+        "eyebrow": "Por categoría",
+        "titulo": "Busca por tipo de pisada",
+        "cta_texto": "Ver todo el catálogo"
+      },
+      "blocks": {
+        "categoria-1": {
+          "type": "categoria",
+          "settings": {
+            "titulo": "Retro"
+          }
+        },
+        "categoria-2": {
+          "type": "categoria",
+          "settings": {
+            "titulo": "Running"
+          }
+        },
+        "categoria-3": {
+          "type": "categoria",
+          "settings": {
+            "titulo": "Skate"
+          }
+        },
+        "categoria-4": {
+          "type": "categoria",
+          "settings": {
+            "titulo": "Básquet"
+          }
+        },
+        "categoria-5": {
+          "type": "categoria",
+          "settings": {
+            "titulo": "Niños"
+          }
+        }
+      },
+      "block_order": [
+        "categoria-1",
+        "categoria-2",
+        "categoria-3",
+        "categoria-4",
+        "categoria-5"
+      ]
+    },
+    "catalog": {
+      "type": "catalog",
+      "settings": {
+        "eyebrow": "Catálogo",
+        "titulo": "Lo que más sale",
+        "nota": "Los precios cambian según el carril que elijas arriba.",
+        "limite": 8,
+        "columnas": "4"
+      },
+      "blocks": {
+        "filtro-1": {
+          "type": "filtro",
+          "settings": {
+            "etiqueta": "Retro",
+            "tag": "retro"
+          }
+        },
+        "filtro-2": {
+          "type": "filtro",
+          "settings": {
+            "etiqueta": "Running",
+            "tag": "running"
+          }
+        },
+        "filtro-3": {
+          "type": "filtro",
+          "settings": {
+            "etiqueta": "Skate",
+            "tag": "skate"
+          }
+        },
+        "filtro-4": {
+          "type": "filtro",
+          "settings": {
+            "etiqueta": "Básquet",
+            "tag": "basquet"
+          }
+        },
+        "filtro-5": {
+          "type": "filtro",
+          "settings": {
+            "etiqueta": "Casual",
+            "tag": "casual"
+          }
+        }
+      },
+      "block_order": [
+        "filtro-1",
+        "filtro-2",
+        "filtro-3",
+        "filtro-4",
+        "filtro-5"
+      ]
+    },
+    "wholesale": {
+      "type": "wholesale",
+      "settings": {
+        "eyebrow": "Mayoreo",
+        "titulo": "Surte tu tienda",
+        "texto": "Trabajamos con tiendas de barrio, bazares, tianguis y vendedores en línea. Entre más pares, mejor precio por par. Sin contrato, sin cuota de membresía.",
+        "aviso_ejemplo": "Sustituye estos rangos y precios por tu lista real antes de publicar.",
+        "form_eyebrow": "Solicita tu lista de precios",
+        "form_titulo": "Abre tu cuenta de mayorista",
+        "form_boton": "Recibir lista de precios",
+        "form_exito": "En menos de 24 horas te mandamos el catálogo y la lista de precios de mayorista.",
+        "form_nota": "Revisamos cada solicitud a mano. Al aprobarla etiquetamos tu cuenta como mayorista y los precios cambian solos.",
+        "estados": "Ciudad de México, Estado de México, Jalisco, Nuevo León, Puebla, Guanajuato, Otro",
+        "volumenes": "6 a 11 pares, 12 a 35 pares, 36 a 99 pares, 100 pares o más"
+      },
+      "blocks": {
+        "escala-1": {
+          "type": "escala",
+          "settings": {
+            "rango": "6–11",
+            "titulo": "Pares surtidos",
+            "nota": "Modelos y tallas a tu elección",
+            "precio": "$1,120 / par",
+            "ahorro": "−38% vs menudeo"
+          }
+        },
+        "escala-2": {
+          "type": "escala",
+          "settings": {
+            "rango": "12–35",
+            "titulo": "Caja completa",
+            "nota": "Corrida 25–30 MX · envío gratis",
+            "precio": "$995 / par",
+            "ahorro": "−45% vs menudeo"
+          }
+        },
+        "escala-3": {
+          "type": "escala",
+          "settings": {
+            "rango": "36+",
+            "titulo": "Distribuidor",
+            "nota": "Crédito a 15 días con historial",
+            "precio": "$845 / par",
+            "ahorro": "−53% vs menudeo"
+          }
+        },
+        "paso-1": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Mándanos tus datos",
+            "texto": "Nombre del negocio y WhatsApp. Respondemos el mismo día hábil."
+          }
+        },
+        "paso-2": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Recibe catálogo y lista de precios",
+            "texto": "PDF con existencias reales y corridas disponibles."
+          }
+        },
+        "paso-3": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Arma tu pedido",
+            "texto": "Mezcla modelos y tallas hasta llegar al mínimo."
+          }
+        },
+        "paso-4": {
+          "type": "paso",
+          "settings": {
+            "titulo": "Pagas y se surte",
+            "texto": "Transferencia o depósito. Sale de almacén en 24–72 h."
+          }
+        }
+      },
+      "block_order": [
+        "escala-1",
+        "escala-2",
+        "escala-3",
+        "paso-1",
+        "paso-2",
+        "paso-3",
+        "paso-4"
+      ]
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "settings": {
+        "eyebrow": "Editorial",
+        "titulo": "Drop 07 Asfalto",
+        "texto": "Siete modelos fotografiados en banqueta, puente y estacionamiento. La sesión completa sale el viernes junto con el drop.",
+        "numero": "07",
+        "cta1_texto": "Ver el lookbook",
+        "cta2_texto": "Comprar el drop"
+      }
+    },
+    "services": {
+      "type": "services",
+      "settings": {
+        "sin_margen_superior": true
+      },
+      "blocks": {
+        "servicio-1": {
+          "type": "servicio",
+          "settings": {
+            "icono": "envio",
+            "titulo": "Envío a todo México",
+            "texto": "24 a 72 horas en zonas metropolitanas. Gratis desde $1,499 en menudeo y desde 12 pares en mayoreo."
+          }
+        },
+        "servicio-2": {
+          "type": "servicio",
+          "settings": {
+            "icono": "caja",
+            "titulo": "Corrida completa",
+            "texto": "Caja de 12 pares con tallas 25 a 30 MX. También armamos surtidos según lo que más te rote."
+          }
+        },
+        "servicio-3": {
+          "type": "servicio",
+          "settings": {
+            "icono": "garantia",
+            "titulo": "Cambios sin pelear",
+            "texto": "30 días para cambiar talla en menudeo. En mayoreo reponemos cualquier par con defecto de fábrica."
+          }
+        },
+        "servicio-4": {
+          "type": "servicio",
+          "settings": {
+            "icono": "pago",
+            "titulo": "Pagas como quieras",
+            "texto": "Tarjeta, 12 MSI, OXXO, transferencia SPEI y Mercado Pago. Facturamos CFDI 4.0 el mismo día."
+          }
+        }
+      },
+      "block_order": [
+        "servicio-1",
+        "servicio-2",
+        "servicio-3",
+        "servicio-4"
+      ]
+    },
+    "social": {
+      "type": "social-grid",
+      "settings": {
+        "sin_margen_superior": true,
+        "handle": "@tutienda",
+        "titulo": "En la calle"
+      },
+      "blocks": {
+        "post-1": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-2": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-3": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-4": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-5": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-6": {
+          "type": "post",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "post-1",
+        "post-2",
+        "post-3",
+        "post-4",
+        "post-5",
+        "post-6"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "sin_margen_superior": true,
+        "eyebrow": "Ayuda",
+        "titulo": "Preguntas frecuentes",
+        "texto": "¿No encuentras tu respuesta? Escríbenos por WhatsApp de lunes a sábado, 9:00 a 19:00 h."
+      },
+      "blocks": {
+        "pregunta-1": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuál es el pedido mínimo de mayoreo?",
+            "respuesta": "<p>Seis pares surtidos: puedes mezclar modelos, colores y tallas hasta llegar al mínimo. A partir de doce pares se arma caja completa con corrida 25 a 30 MX y el envío va por nuestra cuenta.</p>"
+          }
+        },
+        "pregunta-2": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Hacen envíos a toda la República?",
+            "respuesta": "<p>Sí. En CDMX, Estado de México, Guadalajara y Monterrey entregamos en 24 a 48 horas. Al resto del país llega en 3 a 5 días hábiles. Todos los pedidos salen con número de guía.</p>"
+          }
+        },
+        "pregunta-3": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Puedo cambiar la talla si no me queda?",
+            "respuesta": "<p>En menudeo tienes 30 días naturales para cambiar talla, con el tenis sin uso y en su caja original. En mayoreo reponemos cualquier par con defecto de fábrica dentro de los 15 días siguientes a la entrega.</p>"
+          }
+        },
+        "pregunta-4": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Emiten factura?",
+            "respuesta": "<p>Sí, CFDI 4.0. Mándanos tu constancia de situación fiscal junto con el pedido y la factura sale el mismo día hábil.</p>"
+          }
+        },
+        "pregunta-5": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cómo sé si hay existencia de mi talla?",
+            "respuesta": "<p>El inventario de la tienda está en vivo: si una talla aparece tachada, está agotada. Para mayoreo te mandamos la lista de existencias actualizada cada lunes.</p>"
+          }
+        },
+        "pregunta-6": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Qué formas de pago aceptan?",
+            "respuesta": "<p>En menudeo: tarjeta de crédito y débito, 12 meses sin intereses con bancos participantes, OXXO, transferencia SPEI y Mercado Pago. En mayoreo trabajamos con transferencia y, con historial de compra, crédito a 15 días.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "pregunta-1",
+        "pregunta-2",
+        "pregunta-3",
+        "pregunta-4",
+        "pregunta-5",
+        "pregunta-6"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "titulo": "Entérate antes que la fila",
+        "texto": "Avisos de drops, restock de tallas agotadas y precios de mayorista directo a tu correo.",
+        "boton": "Suscribirme",
+        "nota": "Un correo por semana. Te puedes dar de baja cuando quieras."
+      }
+    }
   },
   "order": [
-    "hero", "brands", "categories", "catalog", "wholesale",
-    "lookbook", "services", "social", "faq", "newsletter"
+    "hero",
+    "brands",
+    "categories",
+    "catalog",
+    "wholesale",
+    "lookbook",
+    "services",
+    "social",
+    "faq",
+    "newsletter"
   ]
 }
